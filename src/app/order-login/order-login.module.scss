@@ -1,0 +1,48 @@
+.loginWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    // background: #fff url(../../../public/images/loginBg.png) bottom center no-repeat;
+    // background-size: 100% auto;
+    background: #fff;
+
+    p {
+        font-size: 16px;
+        color: #999999;
+    }
+    .loginForm {
+        display: block;
+        width: 100%;
+        padding: 0 40px;
+        margin: auto;
+        // margin-top: -74px;
+    }
+    h3 {
+        font-size: 24px;
+        color: #000;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    .textbox {
+        background: #f6f6f7;
+        text-align: left;
+        padding: 0 20px;
+        height: 54px;
+        width: 100%;
+        color: #000;
+
+        &:focus {
+            outline: none;
+        }
+    }
+    .loginButton {
+        justify-content: center;
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}

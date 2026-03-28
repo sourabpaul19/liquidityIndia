@@ -1,0 +1,19 @@
+.orderCard {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: 1px solid rgba(52,56,51,0.1);
+    background: #fff;
+
+    h3 {
+        font-size: 16px;
+        margin: 0 0 5px;
+    }
+    p {
+        font-size: 14px;
+        margin: 0;
+        color: #999999;
+    }
+}

@@ -1,0 +1,33 @@
+.orderCard {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #fff;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #c4e6ff;
+
+    figure {
+        width: 44px;
+        aspect-ratio: 1/1;
+        height: auto;
+        flex: 0 0 auto;
+        border-radius: 10px;
+        position: relative;
+
+        img {
+            border-radius: 10px;
+        }
+    }
+    .orderText {
+        flex: 1;
+    }
+    .orderBottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #c4e6ff;
+        border-radius: 0 0 9px 9px;
+        padding: 8px 1em;
+        color: var(--color-primary);
+    }
+}

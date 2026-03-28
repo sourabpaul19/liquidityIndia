@@ -1,0 +1,75 @@
+.walletBox {
+    padding: 16px 24px;
+    border-radius: 20px;
+    width: calc(100% - 32px);
+    margin: 0 auto 16px;
+    background: #c4e6ff;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    height: 145px;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+
+    h4 {
+        font-size: 18px;
+        margin: 0 0 12px;
+        color: #333;
+    }
+    h2 {
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1;
+        margin: 0;
+        color: #333;
+    }
+    .walletIcon {
+        position: absolute;
+        left: auto;
+        right: -35px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+.emptyCart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 2 / 1;
+    flex-direction: column;
+    gap: 20px;
+}
+.walletList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .walletItem {
+        display: flex;
+        justify-content: space-between;
+        background: #f7f7f7;
+        padding: 12px 1em;
+        border-radius: 10px;
+
+        p {
+            font-size: 14px;
+            color: #888;
+        }
+    }
+}
+
+.textbox {
+    background: #f6f6f7;
+    text-align: left;
+    padding: 0 20px;
+    height: 54px;
+    width: 100%;
+    color: #000;
+    border-radius: 8px;
+    margin-bottom: 16px;
+
+    &:focus {
+        outline: none;
+    }
+}

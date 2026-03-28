@@ -1,0 +1,55 @@
+.welcome_wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    // background: #fff url(../../../public/images/2425.png) bottom -50px center no-repeat;
+    // background-size: 100% auto;
+    background: #fff;
+
+    p {
+        font-size: 16px;
+        text-align: center;
+        color: #999999;
+    }
+    .welcomeForm {
+        display: block;
+        width: 100%;
+        padding: 0 40px;
+    }
+    .textbox {
+        background: #f6f6f7;
+        text-align: left;
+        padding: 0 20px;
+        height: 54px;
+        width: 100%;
+        color: #000;
+
+        &:focus {
+            outline: none;
+        }
+    }
+}
+.otpFooter {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+    padding: 0 24px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    p {
+        font-size: 13px;
+        color: #888;
+
+        strong {
+            font-weight: 500;
+        }
+    }
+}

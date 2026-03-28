@@ -1,0 +1,135 @@
+.profileHeader {
+    display: block;
+    padding: 20px;
+    position: relative;
+
+    &:before {
+        width: 100%;
+        height: 60px;
+        border-radius: 0 0 24px 24px;
+        background: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: "";
+    }
+
+    .profileCard{
+        display: block;
+        border: 1px solid #0089e8;
+        border-radius: 10px;
+        background: #fff;
+        position: relative;
+        z-index: 9;
+
+        .profileTop {
+            display: flex;
+            padding: 1em;
+            gap: 24px;
+            align-items: center;
+
+            figure {
+                margin: 0;
+                width: 46px;
+                height: 46px;
+                border: 1px solid #0089e8;
+                background: #c4e6ff;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #0089e8;
+            }
+            figcaption {
+                flex: 1;
+                h4 {
+                    font-size: 20px;
+                }
+            }
+        }
+
+        .profileBottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #c4e6ff;
+            padding: 16px;
+            border-radius: 0 0 9px 9px;
+
+            .walletHeading {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                color: #0089e8;
+                font-size: 16px;
+                font-weight: 500;
+            }
+            h4 {
+                color: #000;
+                font-size: 16px;
+                font-weight: 500;
+            }
+        }
+    }
+}
+.profileWrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background: #fff;
+
+    .profileItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(52,56,51,0.1);
+
+        &:last-child {
+            border: none;
+        }
+
+        p {
+            color: #888;
+            font-size: 14px;
+        }
+
+    }
+}
+.menu {
+    padding: 0 20px 0;
+
+    .menuItem {
+        display: flex;
+        width: 100%;
+        padding: 16px;
+        align-items: center;
+        justify-content: space-between;
+        background: #eee;
+        border-radius: 8px;
+        margin-bottom: 16px;
+
+        .menuIcon {
+            display: inline-flex;
+            width: 32px;
+            height: 32px;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            background: #fff;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menuText {
+            margin-left: 20px;
+            margin-right: auto;
+
+            h5 {
+                font-size: 16px;
+                }
+                p {
+                font-size: 14px;
+                }
+        }
+    }
+}

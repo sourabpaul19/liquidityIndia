@@ -1,0 +1,242 @@
+.itemCard {
+    display: flex;
+    width: calc(100% - 32px);
+    gap: 20px;
+    justify-content: space-between;
+    margin: 0 auto 16px;
+
+    .itemleft {
+        display: block;
+
+        h4 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        p {
+            color: #9e9e9e;
+            font-size: 14px;
+
+            strong {
+                font-weight: 500;
+                color: #111;
+            }
+        }
+    }
+    .itemRight {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+
+        h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: auto;
+        }
+    }
+    .addItemButton {
+        background: #E5E5E5;
+        width: auto;
+        padding: 0 24px;
+        height: 30px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+    }
+}
+.pickupArea {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 0 auto 16px;
+
+    h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+
+    .pickupBlock {
+        display: flex;
+        gap: 10px;
+
+        .pickupItem {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 8px;
+            background: #f6f6f7;
+            line-height: 1.3;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            color: #888;
+        }
+    }
+}
+.billingArea {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 0 auto 16px;
+
+    h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+    .billingItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 6px;
+
+        &:last-child {
+            padding: 0;
+        }
+
+        h4 {
+            margin: 0;
+        }
+        p {
+            color: #888;
+        }
+    }
+    .CardItem {
+        background: #f6f6f7;
+        display: flex;
+        padding: 8px 16px;
+        color: #888;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;       
+    }
+}
+.bottomArea {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 0 auto 0;
+    position: relative;
+    padding: 0 0 16px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.orderCard {
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: 1px solid rgba(52,56,51,0.1);
+    background: #fff;
+
+    h3 {
+        font-size: 16px;
+        margin: 0 0 5px;
+    }
+    p {
+        font-size: 14px;
+        margin: 0;
+        color: #999999;
+    }
+}
+
+.user {
+    width: 32px;
+    height: auto;
+    margin: 8px;
+    margin-left: auto;
+}
+.acknowledgementWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+
+    p {
+        font-size: 16px;
+        color: #888;
+
+        strong {
+            font-weight: 500;
+        }
+    }
+    .acknowledgementForm {
+        display: block;
+        width: 100%;
+        padding: 0 40px;
+        margin: auto;
+    }
+    h3 {
+        font-size: 24px;
+        color: #000;
+        font-weight: 600;
+        margin-bottom: 24px;
+        line-height: 1;
+        text-align: center;
+    }
+    .textbox {
+        background: #e9f5fc;
+        text-align: left;
+        padding: 0 20px;
+        height: 54px;
+        width: 100%;
+        color: #000;
+
+        &:focus {
+            outline: none;
+        }
+    }
+    .loginButton {
+        justify-content: center;
+        
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
+.acknowledgementFooter {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 24px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    p {
+        font-size: 13px;
+        color: #888;
+
+        strong {
+            font-weight: 500;
+        }
+    }
+}
+.cartFooter {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+    padding: 0 24px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    p {
+        font-size: 16px;
+        color: #888;
+        text-align: center;
+
+        strong {
+            font-weight: 500;
+        }
+    }
+}

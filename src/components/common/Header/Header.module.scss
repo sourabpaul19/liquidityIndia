@@ -1,0 +1,145 @@
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  z-index: 9;
+
+  .icon_only {
+    padding: 12px;
+    background: #fff;
+    border: none;
+  }
+
+  .pageTitle {
+    font-size: 20px;
+    margin: 0 auto;
+  }
+}
+
+/* Overlay background */
+.modal_overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* When open */
+.modal_overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Menu panel - slides from left */
+.modal_content {
+  background: #e9f5fc;
+  width: 90%;
+  max-width: 310px;
+  height: 100%;
+  padding: 1em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+/* When overlay is open, slide menu in */
+.modal_overlay.open .modal_content {
+  transform: translateX(0);
+}
+
+.close_btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  align-self: flex-end;
+  cursor: pointer;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .menuItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #c4e6ff;
+    padding: 12px 1em;
+    border-radius: 10px;
+    gap: 1em;
+
+    .menuIcon {
+      display: inline-flex;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: #fff;
+      align-items: center;
+      justify-content: center;
+    }
+    .menuImage {
+      display: inline-flex;
+      width: 50px;
+      height: 50px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: #fff;
+      position: relative;
+
+      img {
+        border-radius: 50%;
+      }
+    }
+    .menuText {
+      margin-right: auto;
+    }
+    h5 {
+      font-size: 14px;
+    }
+    p {
+      font-size: 12px;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: #111;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: 0.2s;
+
+    &:hover {
+      color: #0089e8;
+    }
+  }
+}
+
+.menuList {
+  background: #c4e6ff;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1em;
+  border-radius: 10px;
+
+  .menuItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #c4e6ff;
+    padding: 12px 0;
+    gap: 1em;
+  }
+}

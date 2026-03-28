@@ -1,0 +1,122 @@
+.barBanner {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    position: relative;
+    margin-bottom: 16px;
+
+    img {
+        border-radius: 10px;
+        object-fit: cover;
+    }
+}
+.barTitle {
+    font-size: 20px;
+}
+.barType {
+    font-size: 16px;
+    color: #999999;
+    margin-bottom: 5px;
+}
+.barAddress {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+}
+.repeatOrderCard {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: 1px solid rgba(52,56,51,0.1);
+    background: #fff;
+
+    .orderItem {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+    }
+    .orderTotal {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        padding-top: 10px;
+        border-top: 1px solid rgba(52,56,51,0.1);
+        margin-top: 10px;
+        font-weight: 600;
+
+        .add_btn {
+            display: flex;
+            width: 32px;
+            height: 32px;
+            background: #e5e5e5;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+    }
+}
+
+.itemWrapper {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    margin-bottom: 16px;
+
+    &:last-child {
+        margin: 0;
+    }
+
+    .itemCard {
+        border-bottom: 1px solid rgba(52,56,51,0.1);
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+        display: flex;
+        width: 100%;
+        align-items: flex-end;
+        justify-content: space-between;
+
+        &:last-child {
+            padding-bottom: 0;
+            border: none;
+            margin-bottom: 0;
+        }
+
+        .itemDetails {
+            flex: 1;
+
+            h4 {
+                font-size: 18px;
+                font-weight: 500;
+            }
+            p {
+                font-size: 14px;
+                color: #666;
+            }
+        }
+        .itemMeta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+
+            h4 {
+                font-size: 18px;
+                font-weight: 500;
+            }
+
+            .itemPrice {
+                font-size: 18px;
+                color: #666;
+                line-height: 1;
+                margin-bottom: 10px;
+            }
+        }
+    }
+}

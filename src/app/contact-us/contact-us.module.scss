@@ -1,0 +1,26 @@
+.fixedbottom {
+    width: 100% !important;
+}
+.textbox {
+        background: #f6f6f7;
+        text-align: left;
+        padding: 0 20px;
+        height: 54px;
+        width: 100%;
+        color: #000;
+
+        &:focus {
+            outline: none;
+        }
+    }
+    .textarea {
+        background: #f6f6f7;
+        text-align: left;
+        padding: 20px;
+        width: 100%;
+        color: #000;
+
+        &:focus {
+            outline: none;
+        }
+    }

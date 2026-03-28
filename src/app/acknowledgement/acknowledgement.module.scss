@@ -1,0 +1,77 @@
+.user {
+    width: 32px;
+    height: auto;
+    margin: 8px;
+    margin-left: auto;
+}
+.acknowledgementWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+
+    p {
+        font-size: 16px;
+        color: #888;
+
+        strong {
+            font-weight: 500;
+        }
+    }
+    .acknowledgementForm {
+        display: block;
+        width: 100%;
+        padding: 0 40px;
+        margin: auto;
+    }
+    h3 {
+        font-size: 24px;
+        color: #000;
+        font-weight: 600;
+        margin-bottom: 24px;
+        line-height: 1;
+        text-align: center;
+    }
+    .textbox {
+        background: #e9f5fc;
+        text-align: left;
+        padding: 0 20px;
+        height: 54px;
+        width: 100%;
+        color: #000;
+
+        &:focus {
+            outline: none;
+        }
+    }
+    .loginButton {
+        justify-content: center;
+        
+        svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
+.acknowledgementFooter {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    height: 56px;
+    padding: 0 24px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    p {
+        font-size: 13px;
+        color: #888;
+
+        strong {
+            font-weight: 500;
+        }
+    }
+}
