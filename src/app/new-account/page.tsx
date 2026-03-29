@@ -77,7 +77,7 @@ export default function NewAccount() {
       });
 
       const response = await fetch(
-        "https://admin.liquiditybars.com/admin/api/updateProfile/",
+        "https://dev2024.co.in/web/liquidity-backend/admin/api/updateProfile/",
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },

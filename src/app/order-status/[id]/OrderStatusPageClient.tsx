@@ -82,7 +82,7 @@ export default function OrderStatusPageClient({ id }: Props) {
   const fetchOrderDetails = useCallback(async (): Promise<OrderData | null> => {
     try {
       const res = await fetch(
-        `https://admin.liquiditybars.com/admin/api/orderDetails/${id}`,
+        `https://dev2024.co.in/web/liquidity-backend/admin/api/orderDetails/${id}`,
         { cache: "no-store" }
       );
       const data = await res.json();
@@ -109,7 +109,7 @@ export default function OrderStatusPageClient({ id }: Props) {
     async (squareOrderId: string): Promise<SquareStatus> => {
       try {
         const res = await fetch(
-          `https://admin.liquiditybars.com/admin/api/getSquareOrderStatus/${squareOrderId}`,
+          `https://dev2024.co.in/web/liquidity-backend/admin/api/getSquareOrderStatus/${squareOrderId}`,
           { cache: "no-store" }
         );
         const data = await res.json();

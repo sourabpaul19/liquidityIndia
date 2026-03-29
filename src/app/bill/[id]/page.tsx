@@ -59,7 +59,7 @@ export default function BillPage() {
 
     try {
       const res = await fetch(
-        `https://admin.liquiditybars.com/admin/api/getSquareOrder/${orderId}`
+        `https://dev2024.co.in/web/liquidity-backend/admin/api/getSquareOrder/${orderId}`
       );
 
       const data = await res.json();

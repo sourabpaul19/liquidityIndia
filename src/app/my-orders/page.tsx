@@ -29,7 +29,7 @@ export default function MyOrders() {
     squareOrderId: string
   ): Promise<string | null> => {
     try {
-      const url = `https://admin.liquiditybars.com/admin/api/getSquareOrderStatus/${squareOrderId}`;
+      const url = `https://dev2024.co.in/web/liquidity-backend/admin/api/getSquareOrderStatus/${squareOrderId}`;
       const res = await fetch(url);
       const data = await res.json();
 
@@ -57,7 +57,7 @@ export default function MyOrders() {
         }
 
         const res = await fetch(
-          `https://admin.liquiditybars.com/admin/api/orderList/${userId}`
+          `https://dev2024.co.in/web/liquidity-backend/admin/api/orderList/${userId}`
         );
         const data = await res.json();
 

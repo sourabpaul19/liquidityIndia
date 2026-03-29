@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     if (body.amount) form.append('amount', String(body.amount));
 
     const res = await fetch(
-      'https://admin.liquiditybars.com/admin/api/add_wallet_balance',
+      'https://dev2024.co.in/web/liquidity-backend/admin/api/add_wallet_balance',
       {
         method: 'POST',
         body: form as any, // application/x-www-form-urlencoded

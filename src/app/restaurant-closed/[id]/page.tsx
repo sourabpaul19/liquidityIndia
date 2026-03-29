@@ -36,7 +36,7 @@ export default function RestaurantClosed() {
     try {
       console.log("🔄 Checking shop status:", shopId);
       const res = await fetch(
-        "https://admin.liquiditybars.com/admin/api/fetchDashboardDataForTempUsers"
+        "https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForTempUsers"
       );
       const data = await res.json();
 

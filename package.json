@@ -28,6 +28,7 @@
     "next": "^16.0.7",
     "orgchart": "^5.0.0",
     "pdfjs-dist": "^5.4.149",
+    "razorpay": "^2.9.6",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
     "react-datepicker": "^8.7.0",

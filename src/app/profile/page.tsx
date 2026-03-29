@@ -212,8 +212,8 @@ export default function Profile() {
                   {loadingWallet 
                     ? 'Loading...' 
                     : walletBalance !== null 
-                      ? `$${parseFloat(walletBalance || '0').toFixed(2)}` 
-                      : '$0.00'
+                      ? `₹${parseFloat(walletBalance || '0').toFixed(2)}` 
+                      : '₹0.00'
                   }
                 </h4>
               </div>

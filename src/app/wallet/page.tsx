@@ -2,19 +2,14 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
-import { loadStripe } from '@stripe/stripe-js';
-import {
-  Elements,
-  CardElement,
-  useStripe,
-  useElements,
-} from '@stripe/react-stripe-js';
 import wallet from '../../../public/images/wallet_bg.svg';
 import cartempty from '../../../public/images/Cards_empty.svg';
 import styles from './wallet.module.scss';
 import BottomNavigation from '@/components/common/BottomNavigation/BottomNavigation';
 import Header from '@/components/common/Header/Header';
 import Modal from '@/components/common/Modal/Modal';
+import Script from "next/script";
+
 
 interface Transaction {
   type: string;
@@ -23,21 +18,19 @@ interface Transaction {
   date_time: string;
 }
 
-interface StripeCardFormProps {
+interface RazorpayFormProps {
   walletBalance: number;
   userId: string;
   onSuccess: (newBalance: number, newTransactions: Transaction[]) => void;
   onClose: () => void;
 }
 
-const StripeCardForm: React.FC<StripeCardFormProps> = ({
+const RazorpayForm: React.FC<RazorpayFormProps> = ({
   walletBalance,
   userId,
   onSuccess,
   onClose,
 }) => {
-  const stripe = useStripe();
-  const elements = useElements();
   const [addAmount, setAddAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -47,19 +40,17 @@ const StripeCardForm: React.FC<StripeCardFormProps> = ({
     [walletBalance, addAmount]
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleRazorpayPayment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!stripe || !elements) return;
-
+    
     const amountNumber = Number(addAmount);
     if (!addAmount || isNaN(amountNumber) || amountNumber <= 0) {
       setError('Please enter a valid positive amount');
       return;
     }
 
-    const cardElement = elements.getElement(CardElement);
-    if (!cardElement) {
-      setError('Card element not ready');
+    if (typeof window === 'undefined' || !(window as any).Razorpay) {
+      setError('Razorpay not loaded. Please refresh the page.');
       return;
     }
 
@@ -67,83 +58,117 @@ const StripeCardForm: React.FC<StripeCardFormProps> = ({
     setError('');
 
     try {
-      // 1) Use your existing create-payment-intent route
-      const piRes = await fetch('/api/create-payment-intent', {
+      // 1) Create Razorpay order using YOUR API
+      const orderRes = await fetch('/api/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: Math.round(amountNumber * 100),
-          currency: 'cad',
+          amount: Math.round(amountNumber * 100), // paise
+          currency: 'INR',
+          receipt: `wallet_topup_${userId}_${Date.now()}`,
         }),
       });
 
-      if (!piRes.ok) {
-        setError('Failed to start payment');
+      const orderData = await orderRes.json();
+      
+      if (!orderData.success || !orderData.id) {
+        setError(orderData.error || 'Failed to create payment order');
         setLoading(false);
         return;
       }
 
-      const { client_secret } = await piRes.json();
+      // 2) Open Razorpay checkout
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
+        amount: orderData.amount,
+        currency: orderData.currency || 'INR',
+        name: 'Liquidity Bars',
+        description: `Wallet Top-up ₹${amountNumber.toFixed(2)}`,
+        order_id: orderData.id,
+        handler: async function (response: any) {
+          try {
+            // 3) Verify payment using YOUR API
+            const verifyRes = await fetch('/api/razorpay/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              }),
+            });
 
-      // 2) Confirm card payment
-      const result = await stripe.confirmCardPayment(client_secret, {
-        payment_method: { card: cardElement },
-      });
+            const verifyData = await verifyRes.json();
+            
+            if (verifyData.success) {
+              // 4) Add to wallet using YOUR API
+              const walletRes = await fetch('/api/wallet/add-balance', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  user_id: userId,
+                  amount: amountNumber,
+                  razorpay_payment_id: response.razorpay_payment_id, // Bonus: track payment
+                }),
+              });
 
-      if (result.error) {
-        setError(result.error.message || 'Payment failed');
-        setLoading(false);
-        return;
-      }
+              const walletData = await walletRes.json();
+              
+              if (walletData.status === '1') {
+                // 5) Refresh wallet data
+                const refreshRes = await fetch(
+                  `https://dev2024.co.in/web/liquidity-backend/admin/api/fetch_wallet_balance/${userId}`
+                );
+                const refreshData = await refreshRes.json();
 
-      if (result.paymentIntent?.status !== 'succeeded') {
-        setError('Payment not completed');
-        setLoading(false);
-        return;
-      }
+                if (refreshData.status === '1') {
+                  const updatedBalance = Number(refreshData.wallet_balance || 0);
+                  const updatedTxns: Transaction[] = refreshData.wallets || [];
+                  onSuccess(updatedBalance, updatedTxns);
+                } else {
+                  onSuccess(walletBalance + amountNumber, []);
+                }
+                onClose();
+              } else {
+                setError(walletData.message || 'Wallet update failed');
+              }
+            } else {
+              setError('Payment verification failed');
+            }
+          } catch (err) {
+            console.error('Wallet topup verification error:', err);
+            setError('Payment processing failed');
+          } finally {
+            setLoading(false);
+          }
+        },
+        prefill: {
+          name: localStorage.getItem('user_name') || '',
+          email: localStorage.getItem('user_email') || '',
+          contact: localStorage.getItem('user_mobile') || '',
+        },
+        theme: {
+          color: '#10b981', // Your primary green
+        },
+        modal: {
+          ondismiss: () => {
+            setLoading(false);
+          }
+        }
+      };
 
-      // 3) Call wallet proxy (form-encoded to PHP)
-      const walletRes = await fetch('/api/wallet/add-balance', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_id: userId,
-          amount: amountNumber,
-        }),
-      });
+      const rzp: any = new (window as any).Razorpay(options);
+      rzp.open();
 
-      const walletData = await walletRes.json();
-      if (walletData.status !== '1') {
-        setError(walletData.message || 'Wallet update failed');
-        setLoading(false);
-        return;
-      }
-
-      // 4) Refresh wallet data from backend
-      const refreshRes = await fetch(
-        `https://admin.liquiditybars.com/admin/api/fetch_wallet_balance/${userId}`
-      );
-      const refreshData = await refreshRes.json();
-
-      if (refreshData.status === '1') {
-        const updatedBalance = Number(refreshData.wallet_balance || 0);
-        const updatedTxns: Transaction[] = refreshData.wallets || [];
-        onSuccess(updatedBalance, updatedTxns);
-      } else {
-        onSuccess(walletBalance + amountNumber, []);
-      }
-
-      onClose();
     } catch (err) {
       console.error('Wallet topup error:', err);
       setError('Something went wrong, please try again');
-    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleRazorpayPayment} className="space-y-4">
       <h5 className="mb-2">Enter amount</h5>
 
       <input
@@ -156,20 +181,15 @@ const StripeCardForm: React.FC<StripeCardFormProps> = ({
         step="0.01"
       />
 
-      <div className="p-3 bg-gray-50 rounded-lg border">
-        <CardElement
-          options={{
-            style: {
-              base: {
-                fontSize: '16px',
-                color: '#424770',
-                '::placeholder': { color: '#aab7c4' },
-              },
-            },
-          }}
-        />
-        <p className="text-xs text-gray-500 mt-1">
-          Card details are processed securely by Stripe.
+      <div className="p-4 bg-emerald-50 border-2 border-emerald-200 rounded-lg">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center">
+            💳
+          </span>
+          <span className="font-semibold text-emerald-800">Razorpay</span>
+        </div>
+        <p className="text-xs text-emerald-700">
+          Secure payment processed by Razorpay
         </p>
       </div>
 
@@ -181,27 +201,23 @@ const StripeCardForm: React.FC<StripeCardFormProps> = ({
 
       <div className="flex items-center justify-between mb-1 text-sm">
         <span>Current balance</span>
-        <span>${walletBalance.toFixed(2)}</span>
+        <span>₹{walletBalance.toFixed(2)}</span>
       </div>
       <div className="flex items-center justify-between mb-4 font-semibold">
         <span>New balance</span>
-        <span>${newBalance.toFixed(2)}</span>
+        <span>₹{newBalance.toFixed(2)}</span>
       </div>
 
       <button
         type="submit"
-        disabled={!stripe || loading}
-        className="bg-primary px-3 py-3 rounded-lg w-full text-white text-center disabled:opacity-50"
+        disabled={loading}
+        className="bg-emerald-600 hover:bg-emerald-700 px-3 py-3 rounded-lg w-full text-white text-center disabled:opacity-50 transition-all"
       >
-        {loading ? 'Processing…' : `Pay & add $${(Number(addAmount) || 0).toFixed(2)}`}
+        {loading ? 'Processing…' : `Pay & add ₹${(Number(addAmount) || 0).toFixed(2)}`}
       </button>
     </form>
   );
 };
-
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
-);
 
 export default function Wallet() {
   const [open, setOpen] = useState(false);
@@ -227,7 +243,7 @@ export default function Wallet() {
     const fetchWalletData = async () => {
       try {
         const res = await fetch(
-          `https://admin.liquiditybars.com/admin/api/fetch_wallet_balance/${userId}`
+          `https://dev2024.co.in/web/liquidity-backend/admin/api/fetch_wallet_balance/${userId}`
         );
         const data = await res.json();
 
@@ -294,6 +310,7 @@ export default function Wallet() {
   return (
     <>
       <Header title="Wallet" />
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
 
       <section className="pageWrapper hasHeader hasFooter hasBottomNav">
         <div className="pageContainer">
@@ -303,7 +320,7 @@ export default function Wallet() {
             <>
               <div className={styles.walletBox}>
                 <h4>Liquidity Cash</h4>
-                <h2>${walletBalance.toFixed(2)}</h2>
+                <h2>₹{walletBalance.toFixed(2)}</h2>
                 <Image
                   src={wallet}
                   alt=""
@@ -350,8 +367,8 @@ export default function Wallet() {
                             }
                           >
                             {isCredit
-                              ? `+ $${amount.toFixed(2)}`
-                              : `- $${amount.toFixed(2)}`}
+                              ? `+ ₹${amount.toFixed(2)}`
+                              : `- ₹${amount.toFixed(2)}`}
                           </p>
                         </div>
                       </div>
@@ -362,9 +379,9 @@ export default function Wallet() {
 
               <div className="container-fluid pt-4 px-4 bottomButton fixed">
                 <button
-                  className="bg-primary px-3 py-3 rounded-lg w-full text-white text-center"
+                  className="bg-emerald-600 hover:bg-emerald-700 px-3 py-3 rounded-lg w-full text-white text-center transition-all"
                   onClick={() => setOpen(true)}
-                  disabled={!userId}
+                  disabled={!userId || loading}
                 >
                   + Add to balance
                 </button>
@@ -374,20 +391,19 @@ export default function Wallet() {
         </div>
       </section>
 
-      {stripePromise && userId && (
+      {/* ✅ Razorpay Modal - No Stripe Elements needed */}
+      {userId && (
         <Modal
           isOpen={open}
           onClose={() => setOpen(false)}
           title="Add Liquidity Cash"
         >
-          <Elements stripe={stripePromise}>
-            <StripeCardForm
-              walletBalance={walletBalance}
-              userId={userId}
-              onSuccess={handleAddSuccess}
-              onClose={() => setOpen(false)}
-            />
-          </Elements>
+          <RazorpayForm
+            walletBalance={walletBalance}
+            userId={userId}
+            onSuccess={handleAddSuccess}
+            onClose={() => setOpen(false)}
+          />
         </Modal>
       )}
 

@@ -18,7 +18,7 @@ export default function Search() {
   const fetchSearchData = async () => {
     try {
       const res = await fetch(
-        "https://admin.liquiditybars.com/admin/api/getAllDataForSearch",
+        "https://dev2024.co.in/web/liquidity-backend/admin/api/getAllDataForSearch",
         {
           method: "GET",
           headers: {

@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!itemId) return res.status(400).json({ message: "Missing itemId" });
 
   try {
-    const response = await fetch(`https://admin.liquiditybars.com/admin/api/deleteFromCart/${itemId}`, {
+    const response = await fetch(`https://dev2024.co.in/web/liquidity-backend/admin/api/deleteFromCart/${itemId}`, {
       method: "DELETE", // or POST if API requires
       headers: { "Content-Type": "application/json" },
     });

@@ -55,7 +55,7 @@ export default function GuestPage() {
   useEffect(() => {
     const fetchShopData = async () => {
       try {
-        const response = await fetch('https://admin.liquiditybars.com/admin/api/fetchDashboardDataForTempUsers');
+        const response = await fetch('https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForTempUsers');
         const data = await response.json();
         
         if (data.status === '1' && data.shops) {

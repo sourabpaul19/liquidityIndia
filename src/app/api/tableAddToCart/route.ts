@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     }
 
     const endpoint =
-      "https://admin.liquiditybars.com/admin/api/addMultipleTempCartItems/";
+      "https://dev2024.co.in/web/liquidity-backend/admin/api/addMultipleTempCartItems/";
 
     console.log("🛒 BACKEND URL:", endpoint);
 

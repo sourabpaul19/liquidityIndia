@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     formData.append("device_id", device_id);
 
     const apiResponse = await fetch(
-      "https://admin.liquiditybars.com/admin/api/getCartDetailsForUser/",
+      "https://dev2024.co.in/web/liquidity-backend/admin/api/getCartDetailsForUser/",
       {
         method: "POST",
         headers: {
