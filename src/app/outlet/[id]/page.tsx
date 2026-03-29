@@ -329,7 +329,7 @@ export default function Outlet() {
                     name: p.name,
                     description: p.description || "",
                     price: Number(p.current_price ?? p.price ?? 0),
-                    image: `https://admin.liquiditybars.com/assets/upload/sub_categories/${encodeURIComponent(
+                    image: `https://dev2024.co.in/web/liquidity-backend/assets/upload/sub_categories/${encodeURIComponent(
                       p.image || ""
                     )}`,
                     is_double_shot: Number(p.is_double_shot || 0),
@@ -676,7 +676,7 @@ export default function Outlet() {
                         <h3>{item.name}</h3>
                         <p>{item.description}</p>
                         <div className="flex items-center justify-between">
-                          <p className={styles.price}>${item.price.toFixed(2)}</p>
+                          <p className={styles.price}>₹{item.price.toFixed(2)}</p>
                           <button className={styles.addButton}>
                             <Plus size={16} />
                           </button>
@@ -697,7 +697,7 @@ export default function Outlet() {
                 onClick={() => router.push("/login")}
                 className="bg-primary px-4 py-4 rounded-lg w-full text-white flex justify-between items-center"
               >
-                <span>({cartCount} items | ${cartTotal.toFixed(2)})</span>
+                <span>({cartCount} items | ₹{cartTotal.toFixed(2)})</span>
                 <span>View Cart</span>
               </button>
             </div>
@@ -709,14 +709,14 @@ export default function Outlet() {
         <Modal isOpen={!!selectedItem} onClose={() => setSelectedItem(null)} title="Customization">
           <div className="flex items-center justify-between mb-4">
             <h3>{selectedItem.name}</h3>
-            <h3 className={styles.itemPrice}>${selectedItem.price.toFixed(2)}</h3>
+            <h3 className={styles.itemPrice}>₹{selectedItem.price.toFixed(2)}</h3>
           </div>
 
           {selectedItem?.is_double_shot ? (
             <div className="flex items-center justify-between mb-4 pb-4 border-b border-blue-200">
               <div>
                 <h4>Add Extra Shots</h4>
-                <p>${(selectedItem.double_shot_price || 0).toFixed(2)}/additional shot</p>
+                <p>₹{(selectedItem.double_shot_price || 0).toFixed(2)}/additional shot</p>
               </div>
               <QuantityButton min={0} max={5} initialValue={extraShotQty} onChange={setExtraShotQty} />
             </div>

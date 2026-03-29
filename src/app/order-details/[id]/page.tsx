@@ -524,7 +524,7 @@ const handleBackClick = useCallback(() => {
                           )}
                       </div>
                       <div>
-                        <h5>${item.price}</h5>
+                        <h5>₹{item.price}</h5>
                       </div>
                     </div>
                   ))
@@ -542,20 +542,20 @@ const handleBackClick = useCallback(() => {
               <div className={styles.historyBlock}>
                 <div className={styles.faqItem}>
                   <p>Subtotal</p>
-                  <h5>${order.amount}</h5>
+                  <h5>₹{order.amount}</h5>
                 </div>
                 <div className={styles.faqItem}>
                   <p>Taxes & Charges</p>
-                  <h5>${order.tax_amount}</h5>
+                  <h5>₹{order.tax_amount}</h5>
                 </div>
                 <div className={styles.faqItem}>
                   <p>Tips</p>
-                  <h5>${order.tips}</h5>
+                  <h5>₹{order.tips}</h5>
                 </div>
                 <div className={styles.row}>
                   <div className={styles.totalItem}>
                     <h5>Grand Total</h5>
-                    <h5>${order.total_amount}</h5>
+                    <h5>₹{order.total_amount}</h5>
                   </div>
                 </div>
               </div>

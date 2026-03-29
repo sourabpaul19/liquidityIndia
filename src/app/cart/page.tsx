@@ -645,8 +645,8 @@ export default function Cart() {
                 }`}
               >
                 {canUseWalletFull
-                  ? `Pay $${finalTotalAmount} with Wallet`
-                  : `Wallet Balance $${walletBalance.toFixed(2)} (Insufficient)`}
+                  ? `Pay ₹${finalTotalAmount} with Wallet`
+                  : `Wallet Balance ₹${walletBalance.toFixed(2)} (Insufficient)`}
               </button>
 
               {/* FULL RAZORPAY */}

@@ -314,7 +314,7 @@ export default function Bars() {
 
                       <div className={styles.orderTotal}>
                         <span>
-                          Order Amount - $
+                          Order Amount - ₹
                           {order.total_amount || order.amount}
                         </span>
 
@@ -363,7 +363,7 @@ export default function Bars() {
                       </div>
 
                       <div className={styles.itemMeta}>
-                        <p className={styles.itemPrice}>$ {product.price}</p>
+                        <p className={styles.itemPrice}>₹ {product.price}</p>
 
                         <QuantityButton
                           min={1}
@@ -389,7 +389,7 @@ export default function Bars() {
                   ))}
 
                   <div className="text-right font-semibold mt-2">
-                    Total: $ {calculateTotal().toFixed(2)}
+                    Total: ₹ {calculateTotal().toFixed(2)}
                   </div>
 
                   <button

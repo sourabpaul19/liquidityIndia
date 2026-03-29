@@ -149,7 +149,7 @@ export default function MyOrders() {
                     </div>
 
                     <div className="text-right">
-                      <h5>${order.total_amount}</h5>
+                      <h5>₹{order.total_amount}</h5>
                     </div>
                   </div>
 

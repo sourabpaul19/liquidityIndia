@@ -17,13 +17,13 @@ const TipsSelector: React.FC<TipsSelectorProps> = ({ value, onChange }) => {
 
   // Sync with prop value
   useEffect(() => {
-    if (!`${value}%`.startsWith("$")) setActiveTip(`${value}%`);
+    if (!`${value}%`.startsWith("₹")) setActiveTip(`${value}%`);
   }, [value]);
 
   const handleTipClick = (tip: string) => {
-  if (tip === "Other" || tip.startsWith("$")) {
+  if (tip === "Other" || tip.startsWith("₹")) {
     setShowModal(true);
-    setCustomTip(tip.startsWith("$") ? tip.replace("$", "") : "");
+    setCustomTip(tip.startsWith("₹") ? tip.replace("₹", "") : "");
   } else {
     const numeric = parseInt(tip.replace("%", ""), 10);
     setActiveTip(tip);
@@ -40,8 +40,8 @@ const TipsSelector: React.FC<TipsSelectorProps> = ({ value, onChange }) => {
 //   }
 
 //   const newTip = `$${amount}`;
-//   const updatedTips = tips.some((t) => t.startsWith("$"))
-//     ? tips.map((t) => (t.startsWith("$") ? newTip : t))
+//   const updatedTips = tips.some((t) => t.startsWith("₹"))
+//     ? tips.map((t) => (t.startsWith("₹") ? newTip : t))
 //     : tips.map((t) => (t === "Other" ? newTip : t));
 
 //   setTips(updatedTips);
@@ -56,9 +56,9 @@ const handleCustomSubmit = () => {
     return;
   }
 
-  const newTip = `$${amount}`;
-  const updatedTips = tips.some((t) => t.startsWith("$"))
-    ? tips.map((t) => (t.startsWith("$") ? newTip : t))
+  const newTip = `₹${amount}`;
+  const updatedTips = tips.some((t) => t.startsWith("₹"))
+    ? tips.map((t) => (t.startsWith("₹") ? newTip : t))
     : tips.map((t) => (t === "Other" ? newTip : t));
 
   setTips(updatedTips);
@@ -115,7 +115,7 @@ const handleCustomSubmit = () => {
               type="number"
               value={customTip}
               onChange={(e) => setCustomTip(e.target.value)}
-              placeholder="Enter Tip Amount ($)"
+              placeholder="Enter Tip Amount (₹)"
               className={`${styles.textbox} w-full mb-4 rounded-md px-3 py-2`}
               min="1"
             />
