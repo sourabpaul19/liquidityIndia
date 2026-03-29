@@ -515,7 +515,7 @@ export default function Restaurant() {
                     name: p.name,
                     description: p.description || "",
                     price: Number(p.current_price ?? p.price ?? 0),
-                    image: `https://admin.liquiditybars.com/assets/upload/sub_categories/${encodeURIComponent(
+                    image: `https://dev2024.co.in/web/liquidity-backend/assets/upload/sub_categories/${encodeURIComponent(
                       p.image || ""
                     )}`,
                     is_double_shot: Number(p.is_double_shot || 0),
