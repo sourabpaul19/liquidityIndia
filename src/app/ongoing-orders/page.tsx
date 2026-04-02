@@ -34,7 +34,7 @@ export default function OngoingOrders() {
     squareOrderId: string
   ): Promise<string | null> => {
     try {
-      const url = `https://dev2024.co.in/web/liquidity-backend/admin/api/getSquareOrderStatus/${squareOrderId}`;
+      const url = `https://dev2024.co.in/web/liquidity-india-backend/admin/api/getSquareOrderStatus/${squareOrderId}`;
       const res = await fetch(url);
       if (!res.ok) {
         console.warn(`Square status HTTP ${res.status} for ${squareOrderId}`);
@@ -71,7 +71,7 @@ export default function OngoingOrders() {
       }
 
       const res = await fetch(
-        `https://dev2024.co.in/web/liquidity-backend/admin/api/orderList/${userId}`,
+        `https://dev2024.co.in/web/liquidity-india-backend/admin/api/orderList/${userId}`,
         { 
           cache: 'no-store',
           next: { revalidate: 0 }

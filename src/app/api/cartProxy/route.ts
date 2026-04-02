@@ -5,7 +5,7 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     const backendRes = await fetch(
-      "https://dev2024.co.in/web/liquidity-backend/admin/api/addMultipleCartItems/",
+      "https://dev2024.co.in/web/liquidity-india-backend/admin/api/addMultipleCartItems/",
       {
         method: "POST",
         headers: {

@@ -37,8 +37,8 @@ export async function POST(req: Request) {
 
     // Choose backend endpoint based on login status
     const backendUrl = user_id 
-      ? "https://dev2024.co.in/web/liquidity-backend/admin/api/getCartDetailsForUser"
-      : "https://dev2024.co.in/web/liquidity-backend/admin/api/getTempCartDetailsForUser";
+      ? "https://dev2024.co.in/web/liquidity-india-backend/admin/api/getCartDetailsForUser"
+      : "https://dev2024.co.in/web/liquidity-india-backend/admin/api/getTempCartDetailsForUser";
 
     // Prepare backend request
     const formData = new URLSearchParams();

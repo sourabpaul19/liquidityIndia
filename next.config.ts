@@ -15,7 +15,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "dev2024.co.in",
-        pathname: "/web/liquidity-backend/assets/upload/**",
+        pathname: "/web/liquidity-india-backend/assets/upload/**",
       },
     ],
   },

@@ -117,7 +117,7 @@ const RazorpayForm: React.FC<RazorpayFormProps> = ({
               if (walletData.status === '1') {
                 // 5) Refresh wallet data
                 const refreshRes = await fetch(
-                  `https://dev2024.co.in/web/liquidity-backend/admin/api/fetch_wallet_balance/${userId}`
+                  `https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetch_wallet_balance/${userId}`
                 );
                 const refreshData = await refreshRes.json();
 
@@ -243,7 +243,7 @@ export default function Wallet() {
     const fetchWalletData = async () => {
       try {
         const res = await fetch(
-          `https://dev2024.co.in/web/liquidity-backend/admin/api/fetch_wallet_balance/${userId}`
+          `https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetch_wallet_balance/${userId}`
         );
         const data = await res.json();
 

@@ -110,7 +110,7 @@ const handleBackClick = useCallback(() => {
       try {
         setLoading(true);
         const res = await fetch(
-          `https://dev2024.co.in/web/liquidity-backend/admin/api/orderDetails/${id}`,
+          `https://dev2024.co.in/web/liquidity-india-backend/admin/api/orderDetails/${id}`,
           { cache: "no-store" }
         );
         const data = await res.json();
@@ -141,7 +141,7 @@ const handleBackClick = useCallback(() => {
 
       try {
         const res = await fetch(
-          `https://dev2024.co.in/web/liquidity-backend/admin/api/getSquareOrderStatus/${order.sqaure_order_id}`,
+          `https://dev2024.co.in/web/liquidity-india-backend/admin/api/getSquareOrderStatus/${order.sqaure_order_id}`,
           { cache: "no-store" }
         );
         const data = await res.json();

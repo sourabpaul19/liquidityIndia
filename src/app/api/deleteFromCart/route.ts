@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     formData.append("item_id", item_id);
 
     const apiRes = await fetch(
-      "https://dev2024.co.in/web/liquidity-backend/admin/api/deleteFromCart/",
+      "https://dev2024.co.in/web/liquidity-india-backend/admin/api/deleteFromCart/",
       {
         method: "POST",
         headers: {

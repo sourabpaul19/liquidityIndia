@@ -130,7 +130,7 @@ export default function Outlet() {
     const fetchStoreData = async () => {
       try {
         const res = await fetch(
-          "https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForTempUsers"
+          "https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchDashboardDataForTempUsers"
         );
         const data = await res.json();
 
@@ -314,7 +314,7 @@ export default function Outlet() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`https://dev2024.co.in/web/liquidity-backend/admin/api/fetchCategoriesByShop/${shopId}`)
+    fetch(`https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchCategoriesByShop/${shopId}`)
       .then((res) => res.json())
       .then((data) => {
         if (cancelled) return;

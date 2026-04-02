@@ -168,7 +168,7 @@ export default function HomePage() {
     const fetchDashboardData = async () => {
       try {
         const dashboardRes = await fetch(
-          `https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForUsers/${userId}`,
+          `https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchDashboardDataForUsers/${userId}`,
           { cache: 'no-store' }
         );
         const dashboardData: DashboardResponse = await dashboardRes.json();

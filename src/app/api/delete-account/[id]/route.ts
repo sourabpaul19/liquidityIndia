@@ -8,7 +8,7 @@ export async function POST(
     const { id } = await params; // Await the Promise
     
     const response = await fetch(
-      `https://dev2024.co.in/web/liquidity-backend/admin/api/delete_account/${id}`,
+      `https://dev2024.co.in/web/liquidity-india-backend/admin/api/delete_account/${id}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

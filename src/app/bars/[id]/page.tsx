@@ -12,7 +12,7 @@ import { Plus } from "lucide-react";
 import styles from "../bars.module.scss";
 
 const BACKEND_ADD_CART_URL =
-  "https://dev2024.co.in/web/liquidity-backend/admin/api/addMultipleCartItems";
+  "https://dev2024.co.in/web/liquidity-india-backend/admin/api/addMultipleCartItems";
 
 // ----------------------------
 // 📌 TypeScript Interfaces
@@ -106,7 +106,7 @@ export default function Bars() {
           shopData = JSON.parse(storedShop);
         } else {
           const response = await fetch(
-            `https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForUsers/${userId}`
+            `https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchDashboardDataForUsers/${userId}`
           );
           const data: DashboardShop = await response.json();
 
@@ -138,7 +138,7 @@ export default function Bars() {
     const fetchRecentOrders = async (shopId: string) => {
       try {
         const response = await fetch(
-          `https://dev2024.co.in/web/liquidity-backend/admin/api/myRecenntOrdersShopWise/${userId}/${shopId}`
+          `https://dev2024.co.in/web/liquidity-india-backend/admin/api/myRecenntOrdersShopWise/${userId}/${shopId}`
         );
 
         const data: RecentOrdersApiResponse = await response.json();

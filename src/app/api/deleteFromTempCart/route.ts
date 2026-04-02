@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const url = `https://dev2024.co.in/web/liquidity-backend/admin/api/deleteFromTempCart/${id}`;
+    const url = `https://dev2024.co.in/web/liquidity-india-backend/admin/api/deleteFromTempCart/${id}`;
 
     const apiRes = await fetch(url, {
       method: "GET",

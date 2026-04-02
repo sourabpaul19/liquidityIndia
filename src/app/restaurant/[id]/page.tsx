@@ -358,7 +358,7 @@ export default function Restaurant() {
         console.log("Current shop:", shopId, "Cart shop:", cartShopId);
 
         const res = await fetch(
-          `https://dev2024.co.in/web/liquidity-backend/admin/api/clearTempCart/${deviceId}`,
+          `https://dev2024.co.in/web/liquidity-india-backend/admin/api/clearTempCart/${deviceId}`,
           { method: "POST" }
         );
 
@@ -403,7 +403,7 @@ export default function Restaurant() {
   //   const fetchStoreData = async () => {
   //     try {
   //       const res = await fetch(
-  //         "https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForTempUsers"
+  //         "https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchDashboardDataForTempUsers"
   //       );
   //       const data = await res.json();
 
@@ -445,7 +445,7 @@ export default function Restaurant() {
   const fetchStoreData = async () => {
     try {
       const res = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForTempUsers"
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchDashboardDataForTempUsers"
       );
       const data = await res.json();
 
@@ -499,7 +499,7 @@ export default function Restaurant() {
     let cancelled = false;
 
     fetch(
-      `https://dev2024.co.in/web/liquidity-backend/admin/api/fetchCategoriesByShop/${shopId}`
+      `https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchCategoriesByShop/${shopId}`
     )
       .then((r) => r.json())
       .then((data) => {
@@ -593,7 +593,7 @@ export default function Restaurant() {
   const checkShopStatusBeforeAdd = async (): Promise<boolean> => {
   try {
     const res = await fetch(
-      "https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForTempUsers"
+      "https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchDashboardDataForTempUsers"
     );
     const data = await res.json();
 
@@ -772,7 +772,7 @@ export default function Restaurant() {
         const tableNoFromStorage =
           getLocalStorage("table_number") || tableNo || "";
   
-        const url = `https://dev2024.co.in/web/liquidity-backend/admin/api/tblOrderList/${deviceId}/${orderDate}/${tableNoFromStorage}`;
+        const url = `https://dev2024.co.in/web/liquidity-india-backend/admin/api/tblOrderList/${deviceId}/${orderDate}/${tableNoFromStorage}`;
   
         const res = await fetch(url);
         const data = await res.json();
@@ -829,7 +829,7 @@ export default function Restaurant() {
 const checkSquareOrderStatus = useCallback(async (squareOrderId: string) => {
   try {
     const res = await fetch(
-      `https://dev2024.co.in/web/liquidity-backend/admin/api/getSquareOrderStatus/${squareOrderId}`
+      `https://dev2024.co.in/web/liquidity-india-backend/admin/api/getSquareOrderStatus/${squareOrderId}`
     );
     const data = await res.json();
 

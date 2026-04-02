@@ -21,7 +21,7 @@ export default function CardManager({ userId }: { userId: string }) {
   async function fetchCards() {
     try {
       const res = await fetch(
-        `https://dev2024.co.in/web/liquidity-backend/admin/api/fetchCards/${userId}`
+        `https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchCards/${userId}`
       );
 
       const data = await res.json();
@@ -51,7 +51,7 @@ export default function CardManager({ userId }: { userId: string }) {
 
     try {
       const res = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/saveCards/",
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/saveCards/",
         {
           method: "POST",
           body: formData, // ❗ DON'T set Content-Type manually
@@ -81,7 +81,7 @@ export default function CardManager({ userId }: { userId: string }) {
   async function deleteCard(cardId: string) {
     try {
       const res = await fetch(
-        `https://dev2024.co.in/web/liquidity-backend/admin/api/deleteCard/${cardId}`,
+        `https://dev2024.co.in/web/liquidity-india-backend/admin/api/deleteCard/${cardId}`,
         { method: "GET" }
       );
 

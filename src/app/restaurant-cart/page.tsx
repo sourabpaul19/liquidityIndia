@@ -125,7 +125,7 @@ export default function RestaurantCart() {
       setCheckingShopStatus(true);
 
       const res = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForTempUsers"
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchDashboardDataForTempUsers"
       );
 
       const data = await res.json();
@@ -192,7 +192,7 @@ export default function RestaurantCart() {
       const tableNoFromStorage =
         getLocalStorage("table_number") || tableNo || "";
 
-      const url = `https://dev2024.co.in/web/liquidity-backend/admin/api/tblOrderList/${deviceId}/${orderDate}/${tableNoFromStorage}`;
+      const url = `https://dev2024.co.in/web/liquidity-india-backend/admin/api/tblOrderList/${deviceId}/${orderDate}/${tableNoFromStorage}`;
 
       const res = await fetch(url);
       const data = await res.json();
@@ -271,7 +271,7 @@ export default function RestaurantCart() {
       formData.append("quantity", String(newQty));
 
       const res = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/updateTempCartData",
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/updateTempCartData",
         { method: "POST", body: formData }
       );
       const data = await res.json();
@@ -346,7 +346,7 @@ export default function RestaurantCart() {
     try {
       setOrderProcessing(true);
       const res = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/createTblOrder",
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/createTblOrder",
         { method: "POST", body: formData }
       );
       const data = await res.json();
@@ -369,7 +369,7 @@ export default function RestaurantCart() {
   const checkShopStatusBeforePayment = async (): Promise<boolean> => {
     try {
       const res = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForTempUsers"
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchDashboardDataForTempUsers"
       );
 
       const data = await res.json();
@@ -479,7 +479,7 @@ export default function RestaurantCart() {
   const checkSquareOrderStatus = useCallback(async (squareOrderId: string) => {
     try {
       const res = await fetch(
-        `https://dev2024.co.in/web/liquidity-backend/admin/api/getSquareOrderStatus/${squareOrderId}`
+        `https://dev2024.co.in/web/liquidity-india-backend/admin/api/getSquareOrderStatus/${squareOrderId}`
       );
       const data = await res.json();
   

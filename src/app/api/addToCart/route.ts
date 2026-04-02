@@ -18,8 +18,8 @@ export async function POST(req: Request) {
 
     // ✅ ROUTE BY user_id PRESENCE
     const endpoint = user_id 
-      ? "https://dev2024.co.in/web/liquidity-backend/admin/api/addMultipleCartItems/"
-      : "https://dev2024.co.in/web/liquidity-backend/admin/api/addMultipleTempCartItems";
+      ? "https://dev2024.co.in/web/liquidity-india-backend/admin/api/addMultipleCartItems/"
+      : "https://dev2024.co.in/web/liquidity-india-backend/admin/api/addMultipleTempCartItems";
 
     console.log("→ ENDPOINT:", endpoint);
     console.log("PAYLOAD:", params.toString());

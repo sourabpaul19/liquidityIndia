@@ -9,6 +9,47 @@ import google from "../../../public/images/google.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+const INDIA_STATES = [
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+  "Andaman and Nicobar Islands",
+  "Chandigarh",
+  "Dadra and Nagar Haveli and Daman and Diu",
+  "Delhi",
+  "Jammu and Kashmir",
+  "Ladakh",
+  "Lakshadweep",
+  "Puducherry",
+];
+
+const DRY_STATES = ["Bihar", "Gujarat", "Mizoram", "Nagaland"];
+
 export default function NewAccount() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -21,12 +62,12 @@ export default function NewAccount() {
     lastName: "",
     email: "",
     phone: "",
+    state: "",
     dob: null as Date | null,
     password: "",
     confirmPassword: "",
   });
 
-  // Get stored user_id and phone from localStorage
   useEffect(() => {
     const storedId = localStorage.getItem("user_id");
     const storedMobile = localStorage.getItem("user_mobile");
@@ -36,7 +77,6 @@ export default function NewAccount() {
     }
   }, []);
 
-  // Calculate minimum allowed date (must be at least 18 years old)
   const today = new Date();
   const minAgeDate = new Date(
     today.getFullYear() - 18,
@@ -44,14 +84,20 @@ export default function NewAccount() {
     today.getDate()
   );
 
+  const isDryState = DRY_STATES.includes(form.state);
+
   const handleButtonClick = () => router.back();
 
-  // Handle form submission
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.firstName || !form.lastName || !form.email || !form.dob) {
+    if (!form.firstName || !form.lastName || !form.email || !form.dob || !form.state) {
       alert("Please fill in all required fields.");
+      return;
+    }
+
+    if (isDryState) {
+      alert("Liquidity app is not available in your selected state.");
       return;
     }
 
@@ -74,10 +120,11 @@ export default function NewAccount() {
         email: form.email,
         dob: form.dob.toISOString().split("T")[0],
         password: form.password,
+        state: form.state,
       });
 
       const response = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/updateProfile/",
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/updateProfile/",
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -94,15 +141,14 @@ export default function NewAccount() {
       if (ok) {
         alert("✅ Account created successfully!");
 
-        // Update local storage
         localStorage.setItem(
           "user_name",
           `${form.firstName} ${form.lastName}`
         );
         localStorage.setItem("user_email", form.email);
+        localStorage.setItem("user_state", form.state);
         localStorage.setItem("isLoggedIn", "true");
 
-        // Decide where to go next: /checkout if coming from OTP+cart flow, else /home
         const next = searchParams.get("next") || "/home";
         router.push(next);
       } else {
@@ -118,7 +164,6 @@ export default function NewAccount() {
 
   return (
     <>
-      {/* Header */}
       <header className="header">
         <button type="button" className="icon_only" onClick={handleButtonClick}>
           <svg
@@ -139,7 +184,6 @@ export default function NewAccount() {
         </button>
       </header>
 
-      {/* Page Wrapper */}
       <section className="pageWrapper hasHeader">
         <div className="pageContainer">
           <div className={styles.loginWrapper}>
@@ -162,6 +206,7 @@ export default function NewAccount() {
                   }
                   required
                 />
+
                 <input
                   type="text"
                   className={`${styles.textbox} rounded-lg`}
@@ -172,6 +217,29 @@ export default function NewAccount() {
                   }
                   required
                 />
+
+                <select
+                  className={`${styles.textbox} rounded-lg`}
+                  value={form.state}
+                  onChange={(e) =>
+                    setForm({ ...form, state: e.target.value })
+                  }
+                  required
+                >
+                  <option value="">Select State</option>
+                  {INDIA_STATES.map((state) => (
+                    <option key={state} value={state}>
+                      {state}
+                    </option>
+                  ))}
+                </select>
+
+                {isDryState && (
+                  <p style={{ color: "red", fontSize: "14px", marginTop: "6px" }}>
+                    Liquidity app is not available in {form.state}.
+                  </p>
+                )}
+
                 <DatePicker
                   selected={form.dob}
                   onChange={(date) =>
@@ -184,6 +252,7 @@ export default function NewAccount() {
                   scrollableYearDropdown
                   className={`${styles.textbox} rounded-lg`}
                 />
+
                 <input
                   type="email"
                   className={`${styles.textbox} rounded-lg`}
@@ -194,6 +263,7 @@ export default function NewAccount() {
                   }
                   required
                 />
+
                 <input
                   type="tel"
                   className={`${styles.textbox} rounded-lg`}
@@ -201,6 +271,7 @@ export default function NewAccount() {
                   value={form.phone}
                   readOnly
                 />
+
                 <input
                   type="password"
                   className={`${styles.textbox} rounded-lg`}
@@ -211,6 +282,7 @@ export default function NewAccount() {
                   }
                   required
                 />
+
                 <input
                   type="password"
                   className={`${styles.textbox} rounded-lg`}
@@ -224,7 +296,7 @@ export default function NewAccount() {
 
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || isDryState}
                   className="bg-primary px-3 py-3 rounded-lg w-full text-white"
                 >
                   {loading ? "Creating..." : "Create Account"}

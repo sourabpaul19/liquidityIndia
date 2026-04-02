@@ -184,7 +184,7 @@ export default function OrderSuccess() {
     try {
       console.log(`📋 Fetching order details: ${id}`);
       const res = await fetch(
-        `https://dev2024.co.in/web/liquidity-backend/admin/api/tblOrderDetails/${id}`,
+        `https://dev2024.co.in/web/liquidity-india-backend/admin/api/tblOrderDetails/${id}`,
         { cache: "no-store" }
       );
       const data = await res.json();
@@ -208,7 +208,7 @@ export default function OrderSuccess() {
     try {
       console.log(`📡 Square API: ${squareOrderId}`);
       const res = await fetch(
-        `https://dev2024.co.in/web/liquidity-backend/admin/api/getSquareOrderStatus/${squareOrderId}`,
+        `https://dev2024.co.in/web/liquidity-india-backend/admin/api/getSquareOrderStatus/${squareOrderId}`,
         { cache: "no-store" }
       );
       const data = await res.json();
@@ -243,7 +243,7 @@ export default function OrderSuccess() {
 
       const tableNo = getLocalStorage("table_number") || "";
       const todayDate = getTodayDate();
-      const url = `https://dev2024.co.in/web/liquidity-backend/admin/api/tblOrderList/${deviceId}/${todayDate}/${tableNo}`;
+      const url = `https://dev2024.co.in/web/liquidity-india-backend/admin/api/tblOrderList/${deviceId}/${todayDate}/${tableNo}`;
       
       const res = await fetch(url);
       if (!res.ok) return;

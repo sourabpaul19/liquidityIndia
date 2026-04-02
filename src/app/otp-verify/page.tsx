@@ -67,7 +67,7 @@ export default function OTPVerify() {
       body.append("user_id", userId);
 
       const res = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/getTempCartDetailsForUser/",
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/getTempCartDetailsForUser/",
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -94,7 +94,7 @@ export default function OTPVerify() {
       body.append("user_id", userId);
 
       const res = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/transferFromTempCart",
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/transferFromTempCart",
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -114,7 +114,7 @@ export default function OTPVerify() {
   // Clear existing logged‑in cart BEFORE transfer
   const clearUserCart = async (userId: string): Promise<boolean> => {
     try {
-      const url = `https://dev2024.co.in/web/liquidity-backend/admin/api/clearCartForUser/${userId}`;
+      const url = `https://dev2024.co.in/web/liquidity-india-backend/admin/api/clearCartForUser/${userId}`;
 
       const res = await fetch(url, {
         method: "POST",
@@ -150,7 +150,7 @@ export default function OTPVerify() {
       formData.append("otp", otp);
 
       const response = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/otpVerification/",
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/otpVerification/",
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },

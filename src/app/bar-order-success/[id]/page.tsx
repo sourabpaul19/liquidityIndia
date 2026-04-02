@@ -88,7 +88,7 @@ export default function OrderSuccess() {
   const fetchOrderDetails = useCallback(async (): Promise<Order | null> => {
     try {
       const res = await fetch(
-        `https://dev2024.co.in/web/liquidity-backend/admin/api/tblOrderDetails/${id}`,
+        `https://dev2024.co.in/web/liquidity-india-backend/admin/api/tblOrderDetails/${id}`,
         { cache: "no-store" }
       );
       const data = await res.json();
@@ -114,7 +114,7 @@ export default function OrderSuccess() {
     async (squareOrderId: string): Promise<SquareStatus> => {
       try {
         const res = await fetch(
-          `https://dev2024.co.in/web/liquidity-backend/admin/api/getSquareOrderStatus/${squareOrderId}`,
+          `https://dev2024.co.in/web/liquidity-india-backend/admin/api/getSquareOrderStatus/${squareOrderId}`,
           { cache: "no-store" }
         );
         const data = await res.json();

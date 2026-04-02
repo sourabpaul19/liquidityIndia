@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     const shopId = body.shop_id;
 
     // Forward to your backend API
-    const response = await fetch('https://dev2024.co.in/web/liquidity-backend/admin/api/clearTempCart/device_id', {
+    const response = await fetch('https://dev2024.co.in/web/liquidity-india-backend/admin/api/clearTempCart/device_id', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

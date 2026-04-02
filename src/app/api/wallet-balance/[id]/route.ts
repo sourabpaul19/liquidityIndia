@@ -8,7 +8,7 @@ export async function GET(
     const { id } = await params; // Await the Promise
     
     const response = await fetch(
-      `https://dev2024.co.in/web/liquidity-backend/admin/api/fetch_wallet_balance/${id}`
+      `https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetch_wallet_balance/${id}`
     );
     
     const data = await response.json();

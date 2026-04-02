@@ -130,7 +130,7 @@ export default function RestaurantBarCart() {
     try {
       setCheckingShopStatus(true);
       const res = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForTempUsers"
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchDashboardDataForTempUsers"
       );
       const data = await res.json();
 
@@ -183,7 +183,7 @@ export default function RestaurantBarCart() {
     setLoadingOrders(true);
     try {
       const res = await fetch(
-        `https://dev2024.co.in/web/liquidity-backend/admin/api/tblOrderList/${deviceId}`
+        `https://dev2024.co.in/web/liquidity-india-backend/admin/api/tblOrderList/${deviceId}`
       );
       const data = await res.json();
       if (data.status === "1") {
@@ -268,7 +268,7 @@ export default function RestaurantBarCart() {
       formData.append("quantity", String(newQty));
 
       const res = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/updateTempCartData",
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/updateTempCartData",
         { method: "POST", body: formData }
       );
       const data = await res.json();
@@ -307,7 +307,7 @@ export default function RestaurantBarCart() {
   const checkShopStatusBeforePayment = async (): Promise<boolean> => {
     try {
       const res = await fetch(
-        "https://dev2024.co.in/web/liquidity-backend/admin/api/fetchDashboardDataForTempUsers"
+        "https://dev2024.co.in/web/liquidity-india-backend/admin/api/fetchDashboardDataForTempUsers"
       );
       const data = await res.json();
       if (data.status === "1" && Array.isArray(data.shops)) {
@@ -352,7 +352,7 @@ export default function RestaurantBarCart() {
     formData.append("tips", Number(tipValue).toFixed(2));
 
     const res = await fetch(
-      "https://dev2024.co.in/web/liquidity-backend/admin/api/createTblOrder",
+      "https://dev2024.co.in/web/liquidity-india-backend/admin/api/createTblOrder",
       { method: "POST", body: formData }
     );
     const data = await res.json();
