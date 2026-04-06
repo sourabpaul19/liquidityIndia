@@ -88,15 +88,13 @@ export default function VaultPage() {
     return today > end;
   };
 
-  const getFormattedDate = (date: string) => {
-    if (!date) return "N/A";
+  const getFormattedDate = (created_at: string) => {
+    if (!created_at) return "N/A";
 
-    const parsedDate = new Date(date.replace(" ", "T"));
-    if (isNaN(parsedDate.getTime())) return date;
-
-    return parsedDate.toLocaleDateString("en-US", {
-      month: "2-digit",
-      day: "2-digit",
+    const date = new Date(created_at.replace(" ", "T"));
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
       year: "numeric",
     });
   };
@@ -120,40 +118,23 @@ export default function VaultPage() {
                 const noBalance = Number(order.balance_quantity) <= 0;
 
                 return (
-                  <div key={order.id} className={styles.vaultCard}>
-                    <div className="flex gap-3">
-                      <figure className="relative w-[72px] h-[110px] rounded overflow-hidden flex-shrink-0 bg-[#f7f1e8]">
-                        <Image
+                  <div key={order.id} className={styles.orderCard}>
+                    <div className="flex gap-4 p-4 justify-between items-center">
+                      <figure className="relative w-16 h-16 rounded overflow-hidden flex-shrink-0">
+                      <Image
                           src={order.product_image || "/images/bar.jpg"}
                           alt={order.product_name || "Product"}
                           fill
                           className="object-contain"
                           unoptimized
                         />
-                      </figure>
+                    </figure>
 
-                      <div className="flex-1 min-w-0">
-                        <h5 className={styles.title}>{order.product_name}</h5>
-
-                        <p className={styles.metaText}>
-                          Order ID: <span>{order.unique_id}</span>
-                        </p>
-
-                        <p className={styles.metaText}>
-                          Category: <span>{order.category_name}</span>
-                        </p>
-
-                        <div className="flex items-center justify-between gap-2 flex-wrap">
-                          <p className={styles.metaText}>
-                            Price: <span>${order.total_amount}</span>
-                          </p>
-
-                          <p className={styles.dateText}>
-                            DATE: {getFormattedDate(order.order_date)}
-                          </p>
-                        </div>
-
-                        {expired && (
+                    <div className={styles.orderText + " flex-1"}>
+                      <h5>{order.product_name}</h5>
+                      <p>{order.category_name}</p>
+                      <p>{getFormattedDate(order.order_date)}</p>
+                      {expired && (
                           <p className="text-red-600 text-xs mt-2 font-medium">
                             Your vault has expired
                           </p>
@@ -164,25 +145,30 @@ export default function VaultPage() {
                             You do not have enough unit left in your vault to continue.
                           </p>
                         )}
+                    </div>
 
-                        <div className="flex gap-2 mt-3">
-                          <Link
-  href={!expired && !noBalance ? `/vault-redeem/${order.id}` : "#"}
-  className={`${styles.actionBtn} ${expired || noBalance ? styles.disabledBtn : ""}`}
->
-  Redeem
-</Link>
+                    <div className="text-right">
+                      <h5>₹{order.total_amount}</h5>
+                    </div>
+
+                      
+                    </div>
+                    <div className={styles.orderBottom}>
+                      <Link
+                              href={!expired && !noBalance ? `/vault-redeem/${order.id}` : "#"}
+                              className={`text-primary font-medium ${expired || noBalance ? styles.disabledBtn : ""}`}
+                            >
+                              Redeem
+                            </Link>
 
                           <Link
                             href={!expired ? `/viewbalance/${order.id}` : "#"}
-                            className={`${styles.actionBtn} ${
+                            className={`text-primary font-medium ${
                               expired ? styles.disabledBtn : ""
                             }`}
                           >
                             View Balance
                           </Link>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 );
