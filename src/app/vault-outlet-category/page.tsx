@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Header from "@/components/common/Header/Header";
 import BottomNavigation from "@/components/common/BottomNavigation/BottomNavigation";
 import styles from "./vault-outlet-category.module.scss";
+import { Star } from "lucide-react";
 
 type VaultCategory = {
   id: string;
@@ -108,10 +109,11 @@ export default function VaultOutletCategoryPage() {
     <>
       <Header title="CATEGORY OUTLETS" />
 
-      <section className={`pageWrapper hasHeader hasFooter ${styles.page}`}>
+      <section className={`pageWrapper hasHeader hasMenu hasFooter ${styles.page}`}>
         <div className={styles.inner}>
-          <div className={styles.tabs} role="tablist" aria-label="Vault categories">
-            {loadingCategories
+          <div className={`${styles.tabs} bg-white border-b-4 border-gray-200 overflow-x-auto no-scrollbar w-full z-40`} role="tablist" aria-label="Vault categories">
+            <div className="flex">
+              {loadingCategories
               ? Array.from({ length: 3 }).map((_, i) => (
                   <div key={i} className={`${styles.tab} ${styles.skeletonTab}`} />
                 ))
@@ -119,18 +121,17 @@ export default function VaultOutletCategoryPage() {
                   <button
                     key={cat.id}
                     type="button"
-                    className={`${styles.tab} ${
-                      activeCategoryId === cat.id ? styles.activeTab : ""
-                    }`}
+                    className={`whitespace-nowrap px-5 py-3 font-medium ${activeCategoryId === cat.id ? "bg-gray-200 text-black" : "text-gray-600"}`}
                     onClick={() => setSelectedCategoryId(cat.id)}
                   >
                     {cat.name}
                   </button>
                 ))}
+            </div>
           </div>
 
           {error ? <p className={styles.error}>{error}</p> : null}
-
+          <div className="px-4 pb-20">
           <div className={styles.grid}>
             {loadingShops
               ? Array.from({ length: 2 }).map((_, i) => (
@@ -164,7 +165,7 @@ export default function VaultOutletCategoryPage() {
                       <div className={styles.nameRow}>
                         <h3 className={styles.name}>{shop.name}</h3>
                         <div className={styles.rating}>
-                          <span className={styles.star}>★</span>
+                          <span className={styles.star}><Star size={12} color="gray" /></span>
                           <span>{shop.rating || "0"}</span>
                         </div>
                       </div>
@@ -177,6 +178,7 @@ export default function VaultOutletCategoryPage() {
             {!loadingShops && shops.length === 0 && !error ? (
               <p className={styles.empty}>No outlets found in this category.</p>
             ) : null}
+          </div>
           </div>
         </div>
       </section>

@@ -1,0 +1,55 @@
+.vaultCard {
+  background: #fff;
+  border: 1px solid #e7dccb;
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #5a4733;
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+
+.metaText {
+  font-size: 12px;
+  color: #7e6f5b;
+  margin-bottom: 4px;
+
+  span {
+    font-weight: 600;
+    color: #5a4733;
+  }
+}
+
+.dateText {
+  font-size: 11px;
+  color: #9a8d79;
+  text-transform: uppercase;
+}
+
+.actionBtn {
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid #dbc8aa;
+  border-radius: 8px;
+  color: #8c7349;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: transparent;
+  min-width: 108px;
+}
+
+.disabledBtn {
+  pointer-events: none;
+  border-color: #d1d5db;
+  color: #9ca3af;
+}

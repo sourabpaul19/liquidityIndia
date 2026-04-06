@@ -1,0 +1,156 @@
+.successHero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px 28px;
+  margin-bottom: 24px;
+  background: #fff;
+  border-radius: 20px;
+}
+
+.successIcon {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin: 0 auto 16px;
+}
+
+.successHero h2 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #111;
+}
+
+.successHero p {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666;
+}
+
+.historyBlock {
+  background: #f7f7f7;
+  border-radius: 10px;
+  padding: 0 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.faqItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e9e9e9;
+  text-decoration: none;
+  color: inherit;
+}
+
+.faqItem:last-child {
+  border-bottom: none;
+}
+
+.faqItem p {
+  margin: 0;
+  font-size: 14px;
+  color: #888888;
+}
+
+.faqItem h5 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  text-align: right;
+}
+
+.orderItem {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid #e9e9e9;
+}
+
+.orderItem:last-child {
+  border-bottom: none;
+}
+
+.orderItem h5 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: normal;
+  color: #111;
+}
+
+.row {
+  background: #bfe3ff;
+  margin: 0 -16px;
+}
+
+.totalItem {
+background: #bfe3ff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+}
+
+.totalItem h5 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111;
+}
+
+.emptyText {
+  padding: 18px 20px;
+  font-size: 14px;
+  color: #888;
+}
+
+.primaryButton {
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 14px;
+  background: #111;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.primaryButton:hover {
+  background: #222;
+}
+
+.primaryButton:active {
+  transform: scale(0.99);
+}
+
+@media (max-width: 640px) {
+  .successHero {
+    padding: 20px 14px 24px;
+  }
+
+  .faqItem,
+  .orderItem {
+    padding: 10px 0;
+  }
+  .totalItem {
+    padding: 10px 16px;
+  }
+
+  .faqItem h5,
+  .orderItem h5,
+  .totalItem h5 {
+    font-size: 14px;
+  }
+}

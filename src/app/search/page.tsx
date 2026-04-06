@@ -1,13 +1,21 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Header from "@/components/common/Header/Header";
 import BottomNavigation from "@/components/common/BottomNavigation/BottomNavigation";
 import styles from "./search.module.scss";
 
+type Shop = {
+  id: string | number;
+  name: string;
+  [key: string]: any;
+};
+
 export default function Search() {
-  const [shops, setShops] = useState<any[]>([]);
+  const router = useRouter();
+
+  const [shops, setShops] = useState<Shop[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +47,11 @@ export default function Search() {
     }
   };
 
-  // Filter shops when typing
+  const handleSelectShop = (shop: Shop) => {
+    localStorage.setItem("selected_shop", JSON.stringify(shop));
+    router.push(`/bars/${shop.id}`);
+  };
+
   const filteredShops = searchTerm
     ? shops.filter((shop) =>
         shop.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -51,7 +63,6 @@ export default function Search() {
       <Header title="Search" />
 
       <section className="pageWrapper hasHeader">
-        {/* Search Bar */}
         <div className="bg-white px-4 py-2 sticky top-0">
           <div className={styles.searchBar}>
             <svg
@@ -82,7 +93,6 @@ export default function Search() {
           </div>
         </div>
 
-        {/* 🔍 Search Results (only when typing) */}
         {searchTerm && (
           <div className={styles.storeList}>
             <h4>Search Results</h4>
@@ -94,9 +104,12 @@ export default function Search() {
                 {filteredShops.length > 0 ? (
                   filteredShops.map((shop) => (
                     <li key={shop.id}>
-                      <Link href={`/bars/${shop.id}`}>
+                      <button
+                        type="button"
+                        onClick={() => handleSelectShop(shop)}
+                      >
                         {shop.name}
-                      </Link>
+                      </button>
                     </li>
                   ))
                 ) : (
@@ -107,7 +120,6 @@ export default function Search() {
           </div>
         )}
 
-        {/* ⭐ Top Shops (always visible) */}
         {!searchTerm && (
           <div className={styles.storeList}>
             <h4>Top Shops</h4>
@@ -119,9 +131,12 @@ export default function Search() {
                 {shops.length > 0 ? (
                   shops.map((shop) => (
                     <li key={shop.id}>
-                      <Link href={`/bars/${shop.id}`}>
+                      <button
+                        type="button"
+                        onClick={() => handleSelectShop(shop)}
+                      >
                         {shop.name}
-                      </Link>
+                      </button>
                     </li>
                   ))
                 ) : (

@@ -22,7 +22,7 @@ const vaultCards = [
     title: "Redeem\nand balance",
     image:
       "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=80",
-    href: "/redeem-balance",
+    href: "/vault-orders",
   },
   {
     title: "Order\nHistory",
@@ -42,33 +42,30 @@ export default function LiquidityVaultPage() {
   return (
     <>
       <Header title="LIQUIDITY" />
-
+      
       <section className={`pageWrapper hasHeader hasFooter ${styles.page}`}>
-        <div className={styles.inner}>
-          <p className={styles.description}>
-            Through <span>Liquidity Vault</span>, reserve your favorite brands
-            at a special price and redeem your reserved product across the
-            outlets in the category of your choice.
-          </p>
-
-          <div className={styles.cardList}>
-            {vaultCards.map((card) => (
-              <a key={card.title} href={card.href} className={styles.card}>
-                <div
-                  className={styles.cardBg}
-                  style={{ backgroundImage: `url(${card.image})` }}
-                />
-                <div className={styles.overlay} />
-                <h2 className={styles.cardTitle}>
-                  {card.title.split("\n").map((line) => (
-                    <React.Fragment key={line}>
-                      {line}
-                      <br />
-                    </React.Fragment>
-                  ))}
-                </h2>
-              </a>
-            ))}
+        <div className="pageContainer">
+          <div className="container-fluid px-4">
+            <p>Through <span>Liquidity Vault</span>, reserve your favorite brands at a special price and redeem your reserved product across the outlets in the category of your choice.</p>
+            <div className={styles.cardList}>
+              {vaultCards.map((card) => (
+                <a key={card.title} href={card.href} className={styles.card}>
+                  <div
+                    className={styles.cardBg}
+                    style={{ backgroundImage: `url(${card.image})` }}
+                  />
+                  <div className={styles.overlay} />
+                  <h2 className={styles.cardTitle}>
+                    {card.title.split("\n").map((line) => (
+                      <React.Fragment key={line}>
+                        {line}
+                        <br />
+                      </React.Fragment>
+                    ))}
+                  </h2>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </section>

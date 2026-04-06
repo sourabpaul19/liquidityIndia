@@ -1,12 +1,12 @@
 .page {
   min-height: 100vh;
   background: #f7f7f7;
-  padding-bottom: 110px;
+  padding-bottom: 100px;
 }
 
 .header {
   height: 56px;
-  background: #ffffff;
+  background: #fff;
   border-bottom: 1px solid #ececec;
   display: flex;
   align-items: center;
@@ -17,7 +17,6 @@
     margin: 0;
     font-size: 18px;
     font-weight: 700;
-    color: #111111;
   }
 }
 
@@ -25,9 +24,7 @@
   border: none;
   background: transparent;
   font-size: 28px;
-  line-height: 1;
   cursor: pointer;
-  color: #111111;
 }
 
 .headerSpace {
@@ -38,15 +35,12 @@
   padding: 16px;
 }
 
-.segmentWrap {
-  margin-bottom: 16px;
-}
-
-.drinkUnit {
-  background: #ffffff;
+.card {
+  background: #fff;
   border: 1px solid #ececec;
   border-radius: 16px;
   overflow: hidden;
+  margin-bottom: 16px;
 }
 
 .listHeader,
@@ -56,27 +50,30 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .listHeader {
   font-size: 12px;
   font-weight: 700;
-  color: #666666;
+  color: #666;
 }
 
-.listRow:last-of-type {
-  border-bottom: 1px solid #f1f1f1;
+.totalRow {
+  border-bottom: none;
+
+  h3 {
+    margin: 0;
+    font-size: 15px;
+  }
 }
 
 .itemName {
   font-size: 15px;
-  font-weight: 500;
-  color: #111111;
-  padding-right: 12px;
+  color: #111;
 }
 
-.unitNote {
+.unitArea {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -86,56 +83,37 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 1px solid #dddddd;
-  background: #ffffff;
-  color: #111111;
-  cursor: pointer;
+  border: 1px solid #ddd;
+  background: #fff;
   font-size: 18px;
-  line-height: 1;
+  cursor: pointer;
 }
 
 .qty {
   margin: 0;
   min-width: 24px;
   text-align: right;
-  font-size: 14px;
   font-weight: 600;
-  color: #111111;
 }
 
-.totalRow {
-  border-bottom: none;
-
-  h3 {
-    margin: 0;
-    font-size: 15px;
-    color: #111111;
-  }
+.paymentBox {
+  margin-bottom: 12px;
 }
 
-.selectForm {
-  margin-bottom: 10px;
-}
-
-.paymentGrid {
+.paymentRow {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-.radioItem {
+.radioCard {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #ececec;
   border-radius: 14px;
   padding: 12px 14px;
-  color: #111111;
-
-  input {
-    margin: 0;
-  }
 }
 
 .noteText {
@@ -145,11 +123,11 @@
   font-weight: 600;
 }
 
-.sectionDivider {
+.sectionTitle {
   margin-bottom: 12px;
   font-size: 14px;
   font-weight: 700;
-  color: #444444;
+  color: #444;
 }
 
 .storeList {
@@ -161,50 +139,48 @@
 .storeItem {
   display: flex;
   gap: 12px;
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #ececec;
   border-radius: 16px;
   padding: 12px;
 }
 
-.storeFigure {
-  margin: 0;
-}
-
-.storeImage {
+.storeImageWrap {
   width: 82px;
   height: 82px;
   border-radius: 12px;
-  object-fit: cover;
-  background: #eeeeee;
+  overflow: hidden;
+  background: #eee;
+  flex-shrink: 0;
 }
 
-.storeCaption {
+.storeImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.storeContent {
   flex: 1;
   display: flex;
   justify-content: space-between;
   gap: 12px;
-}
 
-.outletDistance {
   h4 {
     margin: 0 0 6px;
     font-size: 15px;
-    color: #111111;
   }
 
   p {
     margin: 0;
     font-size: 13px;
-    color: #666666;
+    color: #666;
   }
-}
 
-.distanceSec {
   small {
     font-size: 13px;
     font-weight: 700;
-    color: #111111;
+    color: #111;
   }
 }
 
@@ -213,7 +189,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: #ffffff;
+  background: #fff;
   border-top: 1px solid #ececec;
   padding: 12px 16px;
   display: flex;
@@ -222,31 +198,13 @@
   gap: 12px;
 }
 
-.footerStart {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.footerInfo p {
+  margin: 0;
 }
 
-.footerIcon {
-  width: 34px;
-  height: 34px;
-}
-
-.itemTotal {
-  p {
-    margin: 0;
-  }
-}
-
-.priceEnd {
+.footerPrice {
   font-size: 16px;
   font-weight: 700;
-  color: #111111;
-}
-
-.footerEnd {
-  margin-left: auto;
 }
 
 .checkoutBtn {
@@ -254,8 +212,8 @@
   padding: 0 18px;
   border: none;
   border-radius: 14px;
-  background: #111111;
-  color: #ffffff;
+  background: #111;
+  color: #fff;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -268,8 +226,71 @@
   }
 }
 
-.loadingBox {
+.loading {
   padding: 16px;
+  color: #666;
   font-size: 14px;
-  color: #666666;
+}
+.outletImage {
+  aspect-ratio: 16 / 6;
+  border-radius: 10px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 16px;
+  display: flex;
+  position: relative;
+
+    img {
+      object-fit: cover;
+      border-radius: 10px;
+    }
+}
+.outletContent {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+
+    p {
+        color: #767676;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        display: inline-flex;
+    }
+h4 {
+            font-size: 14px;
+        }
+    .left {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        display: flex;
+
+        
+    }
+    .right {
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        gap: 5px;
+        display: flex;
+    }
+}
+.bottomButton {
+    width: 100%;
+    padding: 16px;
+    position: fixed;
+    bottom: 58px;
+}
+.vaultItem h4 {
+  font-size: 18px;
+  font-weight: 600;
+}
+.vaultItem p {
+    color: #9e9e9e;
+    font-size: 14px;
+    strong {
+      color: #111;
+      font-weight: 500;
+    }
 }

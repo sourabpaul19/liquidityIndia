@@ -3,6 +3,9 @@
     z-index: 9;
     top: 56px;
 }
+.catMenu::-webkit-scrollbar {
+  display: none;
+}
 .outletBanner {
     display: block;
     aspect-ratio: 16/10;

@@ -1,503 +1,520 @@
-"use client";
+'use client';
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import Script from "next/script";
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
+import Script from 'next/script';
+import { useRouter } from 'next/navigation';
+import Header from '@/components/common/Header/Header';
+import BottomNavigation from '@/components/common/BottomNavigation/BottomNavigation';
 import styles from "./vaultcompare.module.scss";
+import { Star } from 'lucide-react';
 
-type CartItem = {
-  id: string;
-  product_id?: string;
+declare global {
+  interface Window {
+    Razorpay?: any;
+  }
+}
+
+interface CartItem {
+  vault_category_name: ReactNode;
+  id: string | number;
   product_name: string;
-  quantity: string;
-  price: string | number;
-  vault_category_id?: string;
-};
+  quantity: number | string;
+  price: number | string;
+}
 
-type OutletItem = {
-  id: string;
+interface OutletItem {
+  id?: string | number;
   name: string;
-  image: string;
   address: string;
-  rating: string | number;
-};
+  image: string;
+  rating: number | string;
+}
 
-type UserDetails = {
+interface UserDetails {
   name?: string;
   email?: string;
   mobile?: string;
-};
-
-const SHOP_IMAGE_BASE =
-  "https://dev2024.co.in/web/liquidity-backend/assets/upload/shops";
-
-const buildShopImage = (fileName?: string | null) => {
-  if (!fileName) return "/assets/placeholder-product.png";
-  if (fileName.startsWith("http://") || fileName.startsWith("https://")) {
-    return fileName;
-  }
-  return `${SHOP_IMAGE_BASE}/${encodeURIComponent(fileName)}`;
-};
+}
 
 export default function VaultComparePage() {
   const router = useRouter();
 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartPrice, setCartPrice] = useState<number>(0);
-  const [cartItemCount, setCartItemCount] = useState<number>(0);
   const [outletDetails, setOutletDetails] = useState<OutletItem[]>([]);
-  const [selectedRadioGroup, setSelectedRadioGroup] = useState<
-    "wallet" | "online" | ""
-  >("");
+  const [selectedPayment, setSelectedPayment] = useState<'wallet' | 'online' | ''>('');
   const [walletBalance, setWalletBalance] = useState<number>(0);
   const [walletStatus, setWalletStatus] = useState<number>(0);
-  const [user, setUser] = useState<UserDetails | null>(null);
+  const [user, setUser] = useState<UserDetails>({});
   const [loading, setLoading] = useState<boolean>(true);
-  const [paying, setPaying] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [initializingPayment, setInitializingPayment] = useState<boolean>(false);
 
-  const deviceId =
-    typeof window !== "undefined"
-      ? localStorage.getItem("uniqueDeviceID") || "12345678"
-      : "12345678";
+  const cartItemCount = useMemo(() => cartItems.length, [cartItems]);
+  const IMAGE_BASE_URL = 'https://dev2024.co.in/web/liquidity-india-backend/assets/upload/vault_shops/';
 
-  const userId =
-    typeof window !== "undefined" ? localStorage.getItem("user_id") || "" : "";
+  
 
-  const outletCategory =
-    typeof window !== "undefined"
-      ? localStorage.getItem("outletCategory") || ""
-      : "";
+  useEffect(() => {
+    initializePage();
+  }, []);
 
-  const loadCartDetails = useCallback(async () => {
+  useEffect(() => {
+    if (cartPrice > walletBalance) {
+      setWalletStatus(1);
+      if (selectedPayment === 'wallet') setSelectedPayment('');
+    } else if (cartPrice <= walletBalance && walletBalance > 0) {
+      setWalletStatus(2);
+    } else {
+      setWalletStatus(0);
+    }
+  }, [cartPrice, walletBalance, selectedPayment]);
+
+  const initializePage = async () => {
     try {
-      const res = await fetch("/api/vault-cart-details", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-        body: JSON.stringify({
-          device_id: deviceId,
-        }),
+      const storedUser = JSON.parse(localStorage.getItem('userDetails') || '{}');
+      setUser(storedUser);
+      setWalletBalance(Number(localStorage.getItem('wallet_balance') || 0));
+
+      await Promise.all([fetchCartItems(), fetchVaultShops()]);
+    } catch (error) {
+      console.error('Initialization failed', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCartItems = async () => {
+    try {
+      const device_id =
+        localStorage.getItem('uniqueDeviceID') ||
+        localStorage.getItem('device_id') ||
+        '';
+
+      const response = await fetch('/api/vault/fetch-cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ device_id }),
       });
 
-      const data = await res.json();
+      const res = await response.json();
 
-      if (data?.status === "1") {
-        const items = Array.isArray(data?.cartItems) ? data.cartItems : [];
-        const total = Number(data?.total_price || 0);
-
+      if (res.status === '1') {
+        const items = Array.isArray(res.cartItems) ? res.cartItems : [];
+        const total = Number(res.total_price || 0);
         setCartItems(items);
         setCartPrice(total);
-        setCartItemCount(items.length);
-
-        localStorage.setItem("cartsPrice", String(total));
-
-        const wallet = Number(localStorage.getItem("wallet_balance") || 0);
-        setWalletBalance(wallet);
-
-        if (total > wallet) {
-          setWalletStatus(1);
-          setSelectedRadioGroup("online");
-        } else if (total < wallet || total === wallet) {
-          setWalletStatus(2);
-        } else {
-          setWalletStatus(0);
-        }
       } else {
         setCartItems([]);
         setCartPrice(0);
-        setCartItemCount(0);
       }
     } catch (error) {
+      console.error('fetchVaultCartItems error', error);
       setCartItems([]);
       setCartPrice(0);
-      setCartItemCount(0);
     }
-  }, [deviceId]);
+  };
 
-  const loadVaultShops = useCallback(async () => {
-    if (!outletCategory) {
-      setOutletDetails([]);
-      return;
-    }
-
+  const fetchVaultShops = async () => {
     try {
-      const res = await fetch(`/api/vault-shops/${outletCategory}`, {
-        cache: "no-store",
+      const outletCategory = localStorage.getItem('outletCategory') || '';
+
+      const response = await fetch('/api/vault/fetch-shops', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ outletCategory }),
       });
 
-      const data = await res.json();
+      const res = await response.json();
 
-      if (data?.status === 1 && Array.isArray(data?.vault_shops)) {
-        const shops = data.vault_shops.map((shop: any) => ({
-          ...shop,
-          image: buildShopImage(shop.image),
-        }));
-        setOutletDetails(shops);
+      if (res.status === 1 || res.status === '1') {
+        setOutletDetails(Array.isArray(res.vault_shops) ? res.vault_shops : []);
       } else {
         setOutletDetails([]);
       }
     } catch (error) {
+      console.error('fetchVaultShops error:', error);
       setOutletDetails([]);
     }
-  }, [outletCategory]);
-
-  useEffect(() => {
-    const userDetails = localStorage.getItem("userDetails");
-    if (userDetails) {
-      try {
-        setUser(JSON.parse(userDetails));
-      } catch {
-        setUser(null);
-      }
-    }
-
-    const init = async () => {
-      setLoading(true);
-      await Promise.all([loadCartDetails(), loadVaultShops()]);
-      setLoading(false);
-    };
-
-    init();
-  }, [loadCartDetails, loadVaultShops]);
-
-  const grandTotal = useMemo(() => Number(cartPrice || 0), [cartPrice]);
-
-  const radioGroupChange = (value: "wallet" | "online") => {
-    setSelectedRadioGroup(value);
   };
 
-  const removeItem = async (index: number, item: CartItem) => {
-    const updatedItems = [...cartItems];
-    updatedItems.splice(index, 1);
-    setCartItems(updatedItems);
-
+  const removeItem = async (item: CartItem) => {
     try {
-      const res = await fetch("/api/delete-vault-cart-item", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: item.id,
-        }),
+      const response = await fetch('/api/vault/delete-cart-item', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: item.id }),
       });
 
-      const data = await res.json();
+      const res = await response.json();
 
-      if (data?.status == 1 || data?.status == "1") {
-        await loadCartDetails();
+      if (res.status === 1 || res.status === '1') {
+        await fetchCartItems();
       } else {
-        await loadCartDetails();
+        alert(res.message || 'Unable to delete item');
       }
     } catch (error) {
-      await loadCartDetails();
+      console.error(error);
+      alert('Delete failed');
     }
-  };
-
-  const transaction = async () => {
-    if (!user) {
-      alert("User details not found");
-      return;
-    }
-
-    setPaying(true);
-
-    const payload = {
-      customer_name: user.name || "",
-      customer_email: user.email || "",
-      customer_mobile: user.mobile || "",
-      user_id: userId,
-      transaction_id: "123456",
-      device_id: deviceId,
-      payment_type: "2",
-    };
-
-    try {
-      const res = await fetch("/api/create-vault-order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-
-      if (data?.status === "1") {
-        localStorage.setItem("vault_orderrr_id", data.order_id);
-        router.push("/vault-order-success");
-      } else {
-        alert(data?.message || "Unable to create order");
-      }
-    } catch (error) {
-      alert("Invalid Data");
-    } finally {
-      setPaying(false);
-    }
-  };
-
-  const payment = async () => {
-    if (!user) {
-      alert("User details not found");
-      return;
-    }
-
-    const RazorpayConstructor = (window as any).Razorpay;
-
-    if (!RazorpayConstructor) {
-      alert("Razorpay is not loaded yet");
-      return;
-    }
-
-    const amountInSubunits = Math.round(Number(cartPrice || 0) * 100);
-
-    const options = {
-      description: "Liquidity",
-      image:
-        "https://firebasestorage.googleapis.com/v0/b/liquidity-app-6d8cb.appspot.com/o/Liquidity_Logo.png?alt=media&token=9b6b5894-0176-4755-aeba-66d1aa7722b6",
-      currency: "C$",
-      key: "rzp_test_1DP5mmOlF5G5ag",
-      amount: amountInSubunits,
-      name: "Liquidity",
-      prefill: {
-        email: user.email || "",
-        contact: user.mobile || "",
-        name: user.name || "",
-      },
-      theme: {
-        color: "#DCC88D",
-      },
-      modal: {
-        ondismiss: function () {
-          alert("dismissed");
-        },
-      },
-      handler: async (response: any) => {
-        const paymentId = response?.razorpay_payment_id || "";
-
-        const payload = {
-          customer_name: user.name || "",
-          customer_email: user.email || "",
-          customer_mobile: user.mobile || "",
-          user_id: userId,
-          transaction_id: paymentId,
-          device_id: deviceId,
-          payment_type: "1",
-        };
-
-        try {
-          const res = await fetch("/api/create-vault-order", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-          });
-
-          const data = await res.json();
-
-          if (data?.status === "1") {
-            localStorage.setItem("vault_orderrr_id", data.order_id);
-            localStorage.setItem("vault", "1");
-            router.push("/vault-order-success");
-          } else {
-            alert(data?.message || "Unable to create order");
-          }
-        } catch (error) {
-          alert("Invalid Data");
-        }
-      },
-    };
-
-    const razorpay = new RazorpayConstructor(options);
-
-    razorpay.on("payment.failed", function (response: any) {
-      const desc = response?.error?.description || "Payment failed";
-      const code = response?.error?.code || "";
-      alert(`${desc} (Error ${code})`);
-    });
-
-    razorpay.open();
   };
 
   const pay = async () => {
-    if (cartItems.length <= 0) {
-      alert("Please select any Order");
+    if (!cartItems.length) {
+      alert('Please select any Order');
       return;
     }
 
-    if (!selectedRadioGroup) {
-      alert("Please choose payment mode");
+    if (!selectedPayment) {
+      alert('Please choose payment mode');
       return;
     }
 
-    if (selectedRadioGroup === "wallet") {
-      await transaction();
+    if (selectedPayment === 'wallet') {
+      await createOrder('123456', '2');
       return;
     }
 
-    if (selectedRadioGroup === "online") {
-      await payment();
+    await handleRazorpayPayment();
+  };
+
+  const createOrder = async (transactionId: string, paymentType: '1' | '2') => {
+  try {
+    setSubmitting(true);
+
+    const storedUser = JSON.parse(localStorage.getItem('userData') || '{}');
+    const userId = localStorage.getItem('user_id') || '';
+    const deviceId =
+      localStorage.getItem('device_id') ||
+      localStorage.getItem('uniqueDeviceID') ||
+      'null';
+
+    const params = new URLSearchParams();
+    params.append('name', storedUser.name || '');
+    params.append('email', storedUser.email || '');
+    params.append('mobile', storedUser.mobile || '');
+    params.append('user_id', userId);
+    params.append('payment_type', paymentType);
+    params.append('transaction_id', transactionId);
+    params.append('device_id', deviceId || 'null');
+
+    const response = await fetch('/api/vault/create-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params.toString(),
+    });
+
+    const res = await response.json();
+
+    if (res.status === '1' || res.status === 1) {
+  const orderId = String(res.order_id || '');
+  localStorage.setItem('vault_orderrr_id', orderId);
+  if (paymentType === '1') localStorage.setItem('vault', '1');
+  router.push(`/vault-order-success/${orderId}`);
+} else {
+  alert(res.message || 'Unable to create order');
+}
+  } catch (error) {
+    console.error('createOrder error:', error);
+    alert('Order failed');
+  } finally {
+    setSubmitting(false);
+  }
+};
+
+  const handleRazorpayPayment = async () => {
+    if (!window.Razorpay) {
+      alert('Razorpay SDK is still loading. Please try again.');
+      return;
+    }
+
+    try {
+      setInitializingPayment(true);
+
+      const amountPaise = Math.round(Number(cartPrice) * 100);
+      const deviceId =
+        localStorage.getItem('device_id') ||
+        localStorage.getItem('uniqueDeviceID') ||
+        'vault';
+
+      const receipt = `vault_${String(deviceId).slice(0, 20)}_${Date.now()
+        .toString()
+        .slice(-6)}`;
+
+      const orderRes = await fetch('/api/razorpay/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: amountPaise,
+          currency: 'INR',
+          receipt,
+        }),
+      });
+
+      const orderData = await orderRes.json();
+
+      if (!orderData?.id) {
+        alert(orderData?.error || 'Failed to create Razorpay order');
+        return;
+      }
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: amountPaise,
+        currency: 'INR',
+        order_id: orderData.id,
+        handler: async function (response: any) {
+          try {
+            const verifyRes = await fetch('/api/razorpay/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(response),
+            });
+
+            const verifyData = await verifyRes.json();
+
+            if (verifyData.success) {
+              await createOrder(response?.razorpay_payment_id || '', '1');
+            } else {
+              alert('Payment verification failed');
+            }
+          } catch (error) {
+            console.error('Payment verification failed:', error);
+            alert('Payment verification failed');
+          }
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+
+      razorpay.on('payment.failed', function () {
+        alert('Payment failed');
+      });
+
+      razorpay.open();
+    } catch (error) {
+      console.error('Razorpay init error:', error);
+      alert('Unable to start payment');
+    } finally {
+      setInitializingPayment(false);
     }
   };
 
+  const formatPrice = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(value);
+  };
+  
+
+  const getImageUrl = (image?: string) => {
+    if (!image) return 'https://picsum.photos/400/300';
+    if (image.startsWith('http://') || image.startsWith('https://')) return image;
+    return `${IMAGE_BASE_URL}${image.replace(/^\/+/, '')}`;
+  };
+
+  const walletAmountToUse = useMemo(() => {
+  return Math.min(Number(cartPrice), Number(walletBalance));
+}, [cartPrice, walletBalance]);
+
+const remainingAmount = useMemo(() => {
+  return Math.max(0, Number(cartPrice) - walletAmountToUse);
+}, [cartPrice, walletAmountToUse]);
+
+const canUseWalletFull = walletBalance >= cartPrice && cartPrice > 0;
+const canUseSplit = walletBalance > 0 && walletBalance < cartPrice;
+
   return (
     <>
-      <Script
-        id="razorpay-checkout"
-        src="https://checkout.razorpay.com/v1/checkout.js"
-        strategy="afterInteractive"
-      />
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
+      
+      <Header title="Compare &amp; Reserve" />
 
-      <section className={styles.page}>
-        <header className={styles.header}>
-          <button className={styles.backBtn} onClick={() => router.back()}>
-            ‹
-          </button>
-          <h1>Compare & Reserve</h1>
-          <div className={styles.headerSpace} />
-        </header>
+      <section className={`pageWrapper hasHeader hasFooter`}>
 
-        <main className={styles.content}>
-          <div className={styles.segmentWrap}>
-            <div className={styles.drinkUnit}>
-              <div className={styles.listHeader}>
-                <span>ITEMS</span>
-                <span>UNITS</span>
+
+        <div className="pageContainer">
+          <section className="px-4">
+
+            {loading ? (
+              <div className="space-y-3 px-4 py-4">
+                {[1, 2].map((item) => (
+                  <div key={item} className="h-10 animate-pulse rounded-xl bg-neutral-100" />
+                ))}
               </div>
-
-              {loading ? (
-                <div className={styles.loadingBox}>Loading cart...</div>
-              ) : (
-                <>
-                  {cartItems.map((cartItem, i) => (
-                    <div className={styles.listRow} key={`${cartItem.id}-${i}`}>
-                      <div className={styles.itemName}>{cartItem.product_name}</div>
-
-                      <div className={styles.unitNote}>
-                        <button
-                          type="button"
-                          className={styles.removeBtn}
-                          onClick={() => removeItem(i, cartItem)}
-                        >
-                          ×
-                        </button>
-                        <p className={styles.qty}>{cartItem.quantity}</p>
-                      </div>
+            ) : (
+              <>
+                {cartItems.map((cartItem) => (
+                  <div key={cartItem.id} className={`${styles.vaultItem} flex items-center justify-between pb-4`}>
+                    <div className='left'>
+                      <h4>{cartItem.product_name}</h4>
+                      <p><strong>Vault Category:</strong> {cartItem.vault_category_name}</p>
                     </div>
-                  ))}
+                    
+                    <div className="right">
+                      
 
-                  <div className={styles.totalRow}>
-                    <h3>Grand Total for the Category</h3>
-                    <h3>$ {grandTotal.toFixed(2)}</h3>
+                      <h4 className='text-right'>
+                        {cartItem.quantity} Unit
+                      </h4>
+                      <button
+                        onClick={() => removeItem(cartItem)}
+                        className="rounded-full border border-red-200 bg-red-50 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.08em] text-red-500"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
-                </>
-              )}
+                ))}
+              </>
+            )}
+          </section>
+
+          <div className='px-4 pb-4'>
+            <h4 className='text-lg font-semibold mb-3'>Billing Summary</h4>
+            <div className={`${styles.vaultItem} flex items-center justify-between pb-1`}>
+              <div className='left'>
+                <h5>Subtotal</h5>
+              </div>
+              <div className='right'>
+                <h5>₹ {formatPrice(cartPrice)}</h5>
+              </div>
             </div>
-          </div>
-
-          <div className={styles.selectForm}>
-            <div className={styles.paymentGrid}>
-              {walletStatus === 2 && (
-                <label className={styles.radioItem}>
-                  <input
-                    type="radio"
-                    name="paymentMode"
-                    value="wallet"
-                    checked={selectedRadioGroup === "wallet"}
-                    onChange={() => radioGroupChange("wallet")}
-                  />
-                  <span>Test Funds</span>
-                </label>
-              )}
-
-              <label className={styles.radioItem}>
-                <input
-                  type="radio"
-                  name="paymentMode"
-                  value="online"
-                  checked={selectedRadioGroup === "online"}
-                  onChange={() => radioGroupChange("online")}
-                />
-                <span>Online Payment</span>
-              </label>
+            <div className={`${styles.vaultItem} flex items-center justify-between pb-1`}>
+              <div className='left'>
+                <h5>Liquidity cash</h5>
+              </div>
+              <div className='right'>
+                {walletBalance > 0 ? (
+                  <h5 className="text-green-600 font-semibold">
+                    -₹ {formatPrice(walletAmountToUse)}
+                  </h5>
+                ) : (
+                  <h5>₹ 0.00</h5>
+                )}
+              </div>
+            </div>
+            <div className={`${styles.vaultItem} flex items-center justify-between pb-1`}>
+              <div className='left'>
+                <h4>Total</h4>
+              </div>
+              <div className='right'>
+                <h4>₹ {formatPrice(cartPrice)}</h4>
+              </div>
             </div>
           </div>
 
           {walletStatus === 1 && (
-            <h4 className={styles.noteText}>
-              Your test fund balance is low.Please use online payment to complete
-              the transactions
-            </h4>
+            <div className="px-4 mb-4">
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <span className="block sm:inline">Your wallet balance is low. Please use online payment to complete the transactions.</span>
+              </div>
+            </div>
           )}
 
-          <div className={styles.sectionDivider}>
-            Outlets in the selected category
-          </div>
+          <div className="grid grid-cols-1 gap-3 px-4">
+            {walletStatus === 2 && (
+              <button
+                onClick={() => setSelectedPayment('wallet')}
+                className={`py-3 px-4 rounded-lg font-medium border transition ${
+                  selectedPayment === 'wallet'
+                    ? 'bg-green-600 text-white border-green-600 shadow-lg'
+                    : 'border border-gray-200 hover:border-gray-300 bg-white text-neutral-700'
+                }`}
+              >
 
-          <div className={styles.storeList}>
-            {outletDetails.map((outlet, index) => (
-              <div className={styles.storeItem} key={outlet.id || index}>
-                <figure className={styles.storeFigure}>
-                  <img
-                    src={outlet.image}
-                    alt={outlet.name}
-                    className={styles.storeImage}
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src =
-                        "/assets/placeholder-product.png";
-                    }}
-                  />
-                </figure>
+                <span>Pay ₹{formatPrice(cartPrice)} with Wallet</span>
+              </button>
+            )}
 
-                <figcaption className={styles.storeCaption}>
-                  <div className={styles.outletDistance}>
-                    <h4 className={styles.shopTitle}>
-                      <strong>{outlet.name}</strong>
-                    </h4>
-                    <p>{outlet.address}</p>
-                  </div>
-                  <div className={styles.distanceSec}>
-                    <small>★ {outlet.rating}</small>
-                  </div>
-                </figcaption>
-              </div>
-            ))}
-          </div>
-        </main>
-
-        <footer className={styles.footer}>
-          <div className={styles.footerStart}>
-            <img
-              src="/assets/whiskey_peg.svg"
-              alt="Whiskey Peg"
-              className={styles.footerIcon}
-            />
-            <div className={styles.itemTotal}>
-              <p>
-                <small>{cartItemCount} ITEM IN CART</small>
-              </p>
-              <p className={styles.priceEnd}>
-                $ {grandTotal.toFixed(2)} <small>plus taxes*</small>
-              </p>
-            </div>
-          </div>
-
-          <div className={styles.footerEnd}>
             <button
-              type="button"
-              className={styles.checkoutBtn}
-              onClick={pay}
-              disabled={paying}
+              onClick={() => setSelectedPayment('online')}
+              className={`py-3 px-4 rounded-lg font-medium border transition flex items-center justify-center gap-2 ${
+                selectedPayment === 'online'
+                  ? 'bg-emerald-600 text-white border-emerald-600 shadow-lg'
+                  : 'border border-gray-200 hover:border-gray-300 bg-white text-neutral-700'
+              }`}
             >
-              <span>{paying ? "Processing..." : "Checkout"}</span>
-              <span>›</span>
+              <span className="">
+                💳
+              </span>
+              <span>Pay ₹{formatPrice(cartPrice)} with Razorpay</span>
+            </button>
+          </div>
+
+          
+
+          <section className='px-4 pt-4 pb-[86px]'>
+            <h4 className="text-lg font-semibold mb-3">
+              Outlets in the selected category
+            </h4>
+
+            <div className="grid grid-cols-1 gap-3">
+              {outletDetails.map((outlet, index) => (
+                
+                <article
+                  key={outlet.id ?? index}
+                  className=""
+                >
+                  <div className={`${styles.outletImage}`}>
+                    <Image
+                      src={getImageUrl(outlet.image) || 'https://picsum.photos/400/300'}
+                      alt={outlet.name}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
+
+                  <div className={`${styles.outletContent}`}>
+                    <div className="left">
+                      <h4 className="">{outlet.name}</h4>
+                      <p className="">{outlet.address}</p>
+                      
+                    </div>
+                      <div className="right">
+                        <p><span><Star size={12} color="gray" /></span>
+                        <span>{outlet.rating}</span></p>
+                      </div>
+                    
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <footer className={`${styles.bottomButton}`}>
+          <div className="flex gap-3">
+ 
+
+            <button
+              onClick={pay}
+              disabled={submitting || initializingPayment}
+              className="px-4 py-3 rounded-lg w-full text-white flex justify-between items-center bg-primary"
+            >
+              <div className="min-w-0 text-left">
+                <p className="text-[10px] leading-tight text-white">
+                  {cartItemCount} item in cart
+                </p>
+
+                <p className="text-sm leading-tight text-white">
+                  ₹ {formatPrice(cartPrice)}{' '}
+                  <span className="text-[10px] font-medium text-white">plus taxes*</span>
+                </p>
+              </div>
+              <span>
+                {submitting || initializingPayment ? 'Processing...' : 'Checkout'}
+              </span>
             </button>
           </div>
         </footer>
       </section>
+      <BottomNavigation/>
     </>
   );
 }
