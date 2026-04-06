@@ -1,14 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const API_BASE = "https://dev2024.co.in/web/liquidity-india-backend/admin/api";
 
 export async function GET(
-  _request: Request,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const res = await fetch(`${API_BASE}/fetchVaultShops/${params.id}`, {
-      method: "GET",
+    const { id } = await context.params;
+
+    const res = await fetch(`${API_BASE}/fetchVaultShops/${id}`, {
       cache: "no-store",
     });
 
