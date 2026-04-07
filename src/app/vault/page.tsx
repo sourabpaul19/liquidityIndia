@@ -28,7 +28,7 @@ const vaultCards = [
     title: "Order\nHistory",
     image:
       "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80",
-    href: "/order-history",
+    href: "/vault-order-history",
   },
   {
     title: "Frequently\nAsked Questions",

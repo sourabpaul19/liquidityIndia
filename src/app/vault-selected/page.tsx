@@ -300,11 +300,14 @@ export default function VaultSelectedPage() {
     const finalPrice =
       Number(matchedVaultCategory.price || 0) * Number(selectedUnit || 0);
 
+    // 🔥 FIX: Use unit price only, not multiplied
+  const unitPrice = Number(matchedVaultCategory.price || 0); // Unit price only
+
     const cartItem: CartItem = {
       productId: product.id,
       productName: product.name,
       quantity: selectedUnit,
-      price: finalPrice,
+      price: unitPrice,
       vaultCategoryId: matchedVaultCategory.vault_category_id,
       vaultCategoryName: matchedVaultCategory.vault_category_name,
     };
@@ -319,7 +322,7 @@ export default function VaultSelectedPage() {
         productId: product.id,
         productName: product.name,
         quantity: selectedUnit,
-        price: finalPrice,
+        price: unitPrice,
         deviceId,
         vaultCategoryId: matchedVaultCategory.vault_category_id,
       });

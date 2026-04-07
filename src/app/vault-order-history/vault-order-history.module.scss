@@ -1,0 +1,16 @@
+.orderCard {
+  background: #fff;
+  border: 1px solid #c4e6ff;
+  border-radius: 10px;
+  flex-direction: column;
+  display: flex;
+}
+.orderBottom {
+  color: var(--color-primary);
+  background: #c4e6ff;
+  border-radius: 0 0 9px 9px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 1em;
+  display: flex;
+}

@@ -1,0 +1,70 @@
+.productBox {
+    background: #f7f7f7;
+    border-radius: 10px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1em;
+    padding: 12px 16px;
+    display: flex;
+
+    figure {
+        aspect-ratio: 4 / 5;
+        border-radius: 5px;
+        flex: none;
+        width: 100px;
+        height: auto;
+        position: relative;
+
+        img {
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    }
+    figcaption {
+        flex: 1;
+        gap: 5px;
+        display: flex;
+        flex-direction: column;
+
+        h4 {
+            font-size: 20px;
+        }
+        p {
+            word-break: break-all;
+            color: #888;
+            align-items: flex-start;
+            gap: 6px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            strong {
+                font-weight: normal;
+            }
+
+            span {
+                color: #000;
+            }
+        }
+    }
+}
+.redeemTable {
+    background: #f7f7f7;
+    border-radius: 10px;
+    padding: 12px 16px;
+    tbody {
+        tr {
+        border-top: 1px solid #3438331a;
+    }
+    }
+    td {
+        color: #888;
+    }
+}
+.bottomBar {
+    width: 100%;
+    padding: 16px;
+    position: fixed;
+    bottom: 58px;
+}
