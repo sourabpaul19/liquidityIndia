@@ -107,7 +107,7 @@ export default function VaultOutletCategoryPage() {
 
   return (
     <>
-      <Header title="CATEGORY OUTLETS" />
+      <Header title="Category Outlets" />
 
       <section className={`pageWrapper hasHeader hasMenu hasFooter ${styles.page}`}>
         <div className={styles.inner}>

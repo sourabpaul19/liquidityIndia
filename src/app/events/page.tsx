@@ -55,7 +55,7 @@ export default function Events() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
                 {events.map((event) => (
                     <article key={event.id}>
-                        <Link href="/outlet">
+                        <Link href="/event-details">
                         <figure className={styles.barImage}> 
                             <Image src={event.img} alt={event.title} fill className="" ></Image> 
                         </figure> 

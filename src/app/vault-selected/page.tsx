@@ -370,7 +370,7 @@ export default function VaultSelectedPage() {
 
   return (
     <>
-      <Header title="LIQUIDITY" />
+      <Header title="Reserve at vault" />
 
       <section
         className={`pageWrapper hasHeader hasFooter hasMenu ${styles.page}`}
